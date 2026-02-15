@@ -28,5 +28,7 @@ class User(SQLModel, table=True):
     is_active: bool = Field(default=True)
     role: str = Field(default="user")
     created_at: datetime = Field(
-        sa_column=Column(TIMESTAMP(timezone=True), server_default=func.now())
+        sa_column=Column(
+            TIMESTAMP(timezone=True), server_default=func.now(), nullable=False
+        )
     )

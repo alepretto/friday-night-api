@@ -15,7 +15,6 @@ dependencies = [
     "pydantic-settings>=2.12.0",
     "sqlmodel>=0.0.33",
     "structlog>=25.5.0",
-    "uuid6>=2025.0.1",
     "uvicorn>=0.40.0",
 ]
 
