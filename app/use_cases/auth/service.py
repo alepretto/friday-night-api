@@ -1,13 +1,13 @@
 from supabase._async.client import AsyncClient
 
-from .schema import UserSingUp
+from .schema import UserSignUp
 
 
 class AuthService:
     def __init__(self, supabase: AsyncClient) -> None:
         self.supabase = supabase
 
-    async def register_new_user(self, user_data: UserSingUp):
+    async def register_new_user(self, user_data: UserSignUp):
 
         response = await self.supabase.auth.sign_up(
             {

@@ -16,6 +16,7 @@ dependencies = [
     "sqlmodel>=0.0.33",
     "structlog>=25.5.0",
     "supabase>=2.28.0",
+    "supabase-auth>=2.28.0",
     "uvicorn>=0.40.0",
 ]
 

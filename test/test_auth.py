@@ -23,7 +23,7 @@ def mock_auth_service():
     app.dependency_overrides.clear()
 
 
-def test_sigup_endpoint_success(mock_auth_service):
+def test_signup_endpoint_success(mock_auth_service):
 
     mock_auth_service.register_new_user.return_value = {
         "id": "550e8400-e29b-41d4-a716-446655440000",  # Seu padrão UUID
@@ -39,7 +39,7 @@ def test_sigup_endpoint_success(mock_auth_service):
         "last_name": "Pretto",
     }
 
-    response = client.post("api/v1/auth/signup", json=payload)
+    response = client.post("/api/v1/auth/signup", json=payload)
 
     assert response.status_code == 200
     assert (
