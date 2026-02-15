@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 
 from app.api.deps.core import get_auth_service
 
-from .schema import UserSignUp
+from .schema import UserSignIn, UserSignUp
 from .service import AuthService
 
 router = APIRouter(prefix="/auth")
@@ -19,3 +19,13 @@ async def signup(
         "message": "Usuário criado. Verifique o e-mail se necessário",
         "user": user,
     }
+
+
+@router.post("/login")
+async def signin(
+    login_data: UserSignIn, service: AuthService = Depends(get_auth_service)
+):
+
+    response = await service.login_user(login_data)
+
+    return response

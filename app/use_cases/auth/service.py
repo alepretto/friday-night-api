@@ -1,6 +1,6 @@
 from supabase._async.client import AsyncClient
 
-from .schema import UserSignUp
+from .schema import UserSignIn, UserSignUp
 
 
 class AuthService:
@@ -23,3 +23,23 @@ class AuthService:
         )
 
         return response.user
+
+    async def login_user(self, login_data: UserSignIn):
+
+        response = await self.supabase.auth.sign_in_with_password(
+            {"email": login_data.email, "password": login_data.password}
+        )
+
+        session = response.session
+        if not session:
+            raise
+
+        user = response.user
+        if not user:
+            raise
+
+        return {
+            "access_token": session.access_token,
+            "token_type": "bearer",
+            "user": user.model_dump(),
+        }
