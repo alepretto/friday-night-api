@@ -28,8 +28,8 @@ async def get_current_user(
     try:
         response = await supabase.auth.get_user(token)
 
-        if not response:
-            raise
+        if not response or not response.user:
+            raise ValueError("Usuário não encontrado no token")
 
         return response.user
 

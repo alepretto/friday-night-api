@@ -1,5 +1,7 @@
 from supabase._async.client import AsyncClient
 
+from app.use_cases.auth.exceptions import AuthUserNotFound, SessionFiledError
+
 from .schema import UserSignIn, UserSignUp
 
 
@@ -32,11 +34,11 @@ class AuthService:
 
         session = response.session
         if not session:
-            raise
+            raise SessionFiledError()
 
         user = response.user
         if not user:
-            raise
+            raise AuthUserNotFound()
 
         return {
             "access_token": session.access_token,
