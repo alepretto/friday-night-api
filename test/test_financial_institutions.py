@@ -43,8 +43,7 @@ async def test_create_financial_institution_duplicate(db_session):
 
         assert response_2.status_code == 400
         assert (
-            response_2.json()["message"]
-            == "Resource already existis: night-bank - bank"
+            response_2.json()["message"] == "Resource already exists: night-bank - bank"
         )
 
     app.dependency_overrides.clear()
