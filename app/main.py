@@ -4,6 +4,7 @@ from supabase_auth.errors import AuthApiError
 
 from app.api.router import main_router
 from app.core.config import settings
+from app.core.exception import FridayNightException
 
 app = FastAPI(title=settings.PROJECT_NAME, version="0.1.0")
 
@@ -13,6 +14,14 @@ async def supabase_auth_exception_handler(request: Request, exc: AuthApiError):
     return JSONResponse(
         status_code=400,
         content={"message": "Error de validação", "detail": exc.message},
+    )
+
+
+@app.exception_handler(FridayNightException)
+async def friday_night_exception_handler(request: Request, exc: FridayNightException):
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={"error": exc.__class__.__name__, "message": exc.message},
     )
 
 

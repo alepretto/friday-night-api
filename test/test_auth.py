@@ -48,3 +48,22 @@ def test_signup_endpoint_success(mock_auth_service):
     assert response.json()["user"]["email"] == "ale@fridaynight.com"
 
     mock_auth_service.register_new_user.assert_called_once()
+
+
+def test_signin_endpoint_success(mock_auth_service):
+
+    mock_auth_service.login_user.return_value = {
+        "access_token": "leks98KJHKUHwesdsd",
+        "token_type": "bearer",
+        "user": {"id": "124-lkj-54523-23412", "email": "ale@fridaynight.com"},
+    }
+
+    payload = {"email": "ale@fridaynight.com", "password": "senha-super-forte"}
+
+    response = client.post("/api/v1/auth/login", json=payload)
+
+    assert response.status_code == 200
+    assert "access_token" in response.json()
+    assert response.json()["token_type"] == "bearer"
+
+    mock_auth_service.login_user.assert_called_once()
