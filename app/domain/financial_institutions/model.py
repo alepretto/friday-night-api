@@ -5,7 +5,7 @@ from typing import Optional
 
 from sqlalchemy import Column
 from sqlalchemy.types import TIMESTAMP
-from sqlmodel import Field, SQLModel, func
+from sqlmodel import Field, SQLModel, UniqueConstraint, func
 from uuid6 import uuid7
 
 
@@ -20,6 +20,9 @@ class InstitutionType(str, Enum):
 class FinancialInstitutions(SQLModel, table=True):
     __tablename__ = "financial_institutions"  # type: ignore
 
+    __table_args__ = (
+        UniqueConstraint("name", "type", name="uq_financial_institutions_name_type"),
+    )
     id: uuid.UUID = Field(
         primary_key=True, index=True, nullable=False, default_factory=uuid7
     )

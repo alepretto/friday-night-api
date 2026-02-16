@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
+from fastapi_pagination import add_pagination
 from supabase_auth.errors import AuthApiError
 
 from app.api.router import main_router
@@ -26,3 +27,5 @@ async def friday_night_exception_handler(request: Request, exc: FridayNightExcep
 
 
 app.include_router(main_router)
+
+add_pagination(app)
