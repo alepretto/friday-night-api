@@ -33,4 +33,9 @@ async def test_user_delete_success(cliente_autenticado):
 
     response = await client.delete("/api/v1/users/me")
 
-    assert response.status_code == 201
+    assert response.status_code == 204
+
+    response = await client.get("/api/v1/users/me")
+
+    assert response.status_code == 404
+    assert response.json()["detail"] == "Usuário não cadastrado"
