@@ -7,12 +7,12 @@ from sqlmodel.main import SQLModel
 from .model import InstitutionType
 
 
-class FinancialInstitutionsCreate(SQLModel):
+class FinancialInstitutionCreate(SQLModel):
     name: str
     type: InstitutionType
     icon_url: Optional[str] = None
 
 
-class FinancialInstitutionsResponse(FinancialInstitutionsCreate):
+class FinancialInstitutionResponse(FinancialInstitutionCreate):
     id: uuid.UUID
     created_at: datetime
