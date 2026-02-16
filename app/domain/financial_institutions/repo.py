@@ -29,14 +29,14 @@ class FinancialInstitutionsRepo:
 
             raise FinancialInstitutionsAlreadyExists(
                 institution=model.name, type=model.type.value
-            )
+            ) from None
 
     async def list(
         self, type: InstitutionType | None = None, params: Params | None = None
     ):
 
         query = select(FinancialInstitutions)
-        if type:
+        if type is not None:
             query = query.where(FinancialInstitutions.type == type)
 
         query = query.order_by(FinancialInstitutions.name, FinancialInstitutions.type)
