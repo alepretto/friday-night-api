@@ -29,7 +29,8 @@ class FinancialInstitutions(SQLModel, table=True):
     icon_url: Optional[str] = Field(default=None, nullable=True)
 
     created_at: datetime = Field(
+        default=None,
         sa_column=Column(
             TIMESTAMP(timezone=True), server_default=func.now(), nullable=False
-        )
+        ),
     )

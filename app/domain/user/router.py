@@ -3,7 +3,7 @@ from http import HTTPStatus
 from fastapi import APIRouter, Depends
 
 from app.api.deps.core import get_current_user
-from app.api.deps.user import get_user_service
+from app.api.deps.domain import get_user_service
 from app.domain.user.schemas import UserUpdate
 from app.domain.user.service import UserService
 
