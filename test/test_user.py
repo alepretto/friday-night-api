@@ -14,7 +14,7 @@ async def test_user_updated_alterar_nome(cliente_autenticado):
 
 
 @pytest.mark.asyncio
-async def test_user_updated_telegram_id(cliente_autenticado):
+async def test_user_updated_varios_parametros(cliente_autenticado):
 
     client, usuario = cliente_autenticado
 

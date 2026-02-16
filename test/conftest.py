@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 import pytest
 import pytest_asyncio
@@ -56,7 +56,7 @@ async def user_factory(db_session):
             id_ = uuid.uuid4()
 
         if created_at is None:
-            created_at = datetime.now()
+            created_at = datetime.now(tz=timezone.utc)
 
         novo_usuario = domain.User(
             id=id_,
