@@ -1,0 +1,27 @@
+meta {
+  name: Get Me
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/v1/users/me
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "email": "ale.pretto@gmail.com",
+    "password": "asdasd"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
