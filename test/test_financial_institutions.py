@@ -6,7 +6,7 @@ from app.main import app
 
 
 @pytest.mark.asyncio
-async def test_creat_financial_institution(db_session):
+async def test_create_financial_institution(db_session):
 
     app.dependency_overrides[get_db] = lambda: db_session
 
@@ -19,3 +19,5 @@ async def test_creat_financial_institution(db_session):
 
     assert response.status_code == 200
     assert response.json()["name"] == "night-bank"
+    assert response.json()["type"] == "bank"
+    assert "id" in response.json()
