@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "Friday Night API",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
