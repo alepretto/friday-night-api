@@ -1,3 +1,5 @@
+from http import HTTPStatus
+
 from fastapi import APIRouter, Depends
 
 from app.api.deps.core import get_current_user
@@ -18,7 +20,18 @@ async def get_me(user: User = Depends(get_current_user)):
 
 @router.patch("/me")
 async def update_me(
-    update_data: UserUpdate, service: UserService = Depends(get_user_service)
+    update_data: UserUpdate,
+    service: UserService = Depends(get_user_service),
+    user: User = Depends(get_current_user),
 ):
 
-    return await service.update_user(update_data)
+    return await service.update_user(update_data, user)
+
+
+@router.delete("/me", status_code=HTTPStatus.NO_CONTENT)
+async def delete_me(
+    service: UserService = Depends(get_user_service),
+    user: User = Depends(get_current_user),
+):
+
+    await service.delete(user)

@@ -30,30 +30,33 @@ async def get_db():
 security = HTTPBearer()
 
 
-async def get_current_user(
+async def get_supabase_user(
     credentials: HTTPAuthorizationCredentials = Depends(security),
     supabase: AsyncClient = Depends(get_supabase_client),
+):
+    try:
+        response = await supabase.auth.get_user(credentials.credentials)
+        if not response or not response.user:
+            raise HTTPException(status_code=401, detail="Token Inválido")
+
+        return response.user
+
+    except Exception:
+        raise HTTPException(status_code=401, detail="Sessão expirada")
+
+
+async def get_current_user(
+    supabase_user=Depends(get_supabase_user),
     db: AsyncSession = Depends(get_db),
 ):
-    token = credentials.credentials
-    try:
-        response = await supabase.auth.get_user(token)
-        if not response or not response.user:
-            raise ValueError("Usuário não encontrado no token")
+    user_uuid = uuid.UUID(supabase_user.id)
+    user = await db.get(User, user_uuid)
 
-        user_uuid = uuid.UUID(response.user.id)
+    if not user:
+        # Aqui o erro é claro: O token é válido, mas o usuário sumiu do DB
+        raise HTTPException(status_code=404, detail="Usuário não cadastrado")
 
-        user = await db.get(User, user_uuid)
+    if not user.is_active:
+        raise HTTPException(status_code=403, detail="Usuário desativado")
 
-        if not user:
-            raise ValueError("Usuário não encontrado no Banco de dados")
-
-        return user
-
-    except Exception as e:
-        print(f"Erro crítico capturado: {e}")
-        raise HTTPException(
-            status_code=401,
-            detail="Token inválido ou expirado",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
+    return user

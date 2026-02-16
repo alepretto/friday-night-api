@@ -1,5 +1,6 @@
 import uuid
 from datetime import datetime, timezone
+from unittest.mock import AsyncMock
 
 import pytest
 import pytest_asyncio
@@ -9,7 +10,7 @@ from sqlmodel import SQLModel
 from testcontainers.postgres import PostgresContainer
 
 from app import domain
-from app.api.deps.core import get_current_user, get_db
+from app.api.deps.core import get_db, get_supabase_client
 from app.main import app
 
 
@@ -83,14 +84,22 @@ async def cliente_autenticado(user_factory, db_session):
 
     usuario_test = await user_factory()
 
-    async def override_get_current_user():
-        return usuario_test
+    mock_supabase = AsyncMock()
 
-    app.dependency_overrides[get_current_user] = override_get_current_user
+    mock_user_auth = AsyncMock()
+    mock_user_auth.id = str(usuario_test.id)
+
+    mock_supabase.auth.get_user.return_value = AsyncMock(user=mock_user_auth)
+
+    # 3. Overrides
+    # Forçamos o app a usar nossa db_session de teste e nosso mock do Supabase
     app.dependency_overrides[get_db] = lambda: db_session
+    app.dependency_overrides[get_supabase_client] = lambda: mock_supabase
 
     async with AsyncClient(
-        transport=ASGITransport(app=app), base_url="http://test"
+        transport=ASGITransport(app=app),
+        base_url="http://test",
+        headers={"Authorization": "Bearer token_ficticio"},
     ) as client:
         yield client, usuario_test
 
