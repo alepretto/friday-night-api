@@ -1,3 +1,5 @@
+from http import HTTPStatus
+
 from fastapi import APIRouter, Depends
 
 from app.api.deps.core import get_current_user
@@ -10,7 +12,7 @@ from .schemas import AccountCreate, AccountResponse
 router = APIRouter(prefix="/accounts")
 
 
-@router.post("", response_model=AccountResponse)
+@router.post("", response_model=AccountResponse, status_code=HTTPStatus.CREATED)
 async def create_account(
     payload: AccountCreate,
     service: AccountService = Depends(get_account_service),

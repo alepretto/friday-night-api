@@ -19,7 +19,8 @@ async def test_create_account_success(
     }
     response = await client.post("/api/v1/accounts", json=payload)
 
-    assert response.status_code == 200
+    assert response.status_code == 201
+    assert response.json()["financial_institution_id"] == str(institution.id)
 
 
 @pytest.mark.asyncio
@@ -39,7 +40,7 @@ async def test_create_account_error(
         "type": "bank",
     }
     response = await client.post("/api/v1/accounts", json=payload)
-    assert response.status_code == 200
+    assert response.status_code == 201
 
     response_2 = await client.post("/api/v1/accounts", json=payload)
     assert response_2.status_code == 400

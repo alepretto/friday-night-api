@@ -25,4 +25,4 @@ class AccountRepo:
                 institution_id=model.financial_institution_id,
                 type=model.type,
                 subtype=model.subtype,
-            )
+            ) from None
