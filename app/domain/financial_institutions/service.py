@@ -1,7 +1,7 @@
 from fastapi_pagination import Params
 
 from app.domain.financial_institutions.model import (
-    FinancialInstitutions,
+    FinancialInstitution,
     InstitutionType,
 )
 from app.domain.financial_institutions.repo import FinancialInstitutionsRepo
@@ -14,7 +14,7 @@ class FinancialInstitutionService:
 
     async def create_update(self, schema: FinancialInstitutionCreate):
 
-        model = FinancialInstitutions.model_validate(schema)
+        model = FinancialInstitution.model_validate(schema)
         return await self.repo.create_update(model)
 
     async def list(
