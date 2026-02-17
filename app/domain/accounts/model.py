@@ -4,20 +4,20 @@ from enum import Enum
 from typing import Optional
 from uuid import UUID
 
-from sqlalchemy import Column
-from sqlmodel import TIMESTAMP, Field, SQLModel, UniqueConstraint, func
+from sqlalchemy import Column, TIMESTAMP, UniqueConstraint, func
+from sqlmodel import Field, SQLModel
 
 
 class AccountType(str, Enum):
     bank = "bank"
     investment = "investment"
     cash = "cash"
-    benefict = "benefict"
+    benefit = "benefit"  # corrigido
 
 
 class AccountStatus(str, Enum):
     activate = "activate"
-    desactivate = "desactivate"
+    deactivate = "deactivate"  # corrigido
 
 
 class Account(SQLModel, table=True):
@@ -29,21 +29,29 @@ class Account(SQLModel, table=True):
     status: AccountStatus
     type: AccountType
     subtype: Optional[str] = None
-    created_at: datetime = Field(default_factory=func.now)
+
+    # Usa server_default para que o banco preencha o timestamp
+    created_at: datetime = Field(
+        sa_column=Column(
+            TIMESTAMP(timezone=True), server_default=func.now(), nullable=False
+        )
+    )
     updated_at: datetime = Field(
         default=None,
         sa_column=Column(
-            TIMESTAMP(timezone=True), server_default=func.now(), onupdate=func.now()
+            TIMESTAMP(timezone=True),
+            server_default=func.now(),
+            onupdate=func.now(),
+            nullable=True,
         ),
     )
 
-    class Config:
-        table_args = (
-            UniqueConstraint(
-                "user_id",
-                "financial_institution_id",
-                "type",
-                "subtype",
-                name="unique_account",
-            ),
-        )
+    __table_args__ = (
+        UniqueConstraint(
+            "user_id",
+            "financial_institution_id",
+            "type",
+            "subtype",
+            name="unique_account",
+        ),
+    )
