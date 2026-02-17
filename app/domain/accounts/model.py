@@ -1,6 +1,6 @@
 import uuid
 from datetime import datetime, timezone
-from enum import Enum, auto
+from enum import Enum
 from typing import Optional
 from uuid import UUID
 
@@ -9,15 +9,15 @@ from sqlmodel import TIMESTAMP, Field, SQLModel, UniqueConstraint, func
 
 
 class AccountType(str, Enum):
-    bank = auto()
-    investment = auto()
-    cash = auto()
-    benefict = auto()
+    bank = "bank"
+    investment = "investment"
+    cash = "cash"
+    benefict = "benefict"
 
 
 class AccountStatus(str, Enum):
-    activate = auto()
-    desactivate = auto()
+    activate = "activate"
+    desactivate = "desactivate"
 
 
 class Account(SQLModel, table=True):
