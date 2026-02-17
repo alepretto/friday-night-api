@@ -1,14 +1,22 @@
 # Friday Night API
 
-API backend construída com **FastAPI**, **SQLModel** e **Supabase Auth** para autenticação de usuários.
+Backend do meu **assistente pessoal**, construído com **FastAPI**, **SQLModel** e **Supabase Auth**.
+
+A proposta do projeto é centralizar o gerenciamento da vida em um único sistema, evoluindo por módulos.  
+No momento, o foco está no **módulo financeiro**.
 
 ## ✨ Visão geral
 
-O projeto expõe endpoints versionados em `/api/v1` para:
+Esta API expõe endpoints versionados em `/api/v1` e já possui base de autenticação e usuário para sustentar os próximos módulos.
 
-- Cadastro (`signup`) e login (`login`) de usuários usando Supabase.
-- Consulta do usuário autenticado.
-- Atualização de perfil do usuário autenticado.
+Objetivo atual do módulo financeiro:
+
+- Cadastrar e organizar **contas**.
+- Cadastrar e categorizar com **tags**.
+- Cadastrar e controlar **moedas**.
+- Cadastrar e acompanhar **investimentos**.
+- Monitorar tanto **gastos** quanto **patrimônio investido**.
+- Incluir acompanhamento de **ações (stocks)** e **criptomoedas**.
 
 A aplicação também inclui:
 
@@ -104,7 +112,7 @@ A API ficará disponível em `http://127.0.0.1:8000`.
 - Swagger UI: `http://127.0.0.1:8000/docs`
 - ReDoc: `http://127.0.0.1:8000/redoc`
 
-## 📡 Endpoints principais
+## 📡 Endpoints atuais
 
 Base URL: `/api/v1`
 
@@ -140,6 +148,16 @@ Base URL: `/api/v1`
 
 - `GET /users/me` — retorna usuário autenticado.
 - `PATCH /users/me` — atualiza dados do perfil (`first_name`, `last_name`, `avatar_url`, `language`).
+
+## 🗺️ Roadmap (financeiro)
+
+- [ ] Módulo de contas (conta corrente, carteira, conta digital etc.)
+- [ ] Módulo de tags para classificação de gastos e receitas
+- [ ] Módulo de moedas e conversão
+- [ ] Módulo de investimentos
+  - [ ] Ações (stocks)
+  - [ ] Criptomoedas
+- [ ] Relatórios e visão consolidada (gastos x investimentos)
 
 ## 🧪 Desenvolvimento
 
