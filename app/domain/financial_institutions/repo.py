@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import select
 
 from app.domain.financial_institutions.model import (
-    FinancialInstitutions,
+    FinancialInstitution,
     InstitutionType,
 )
 
@@ -16,7 +16,7 @@ class FinancialInstitutionsRepo:
     def __init__(self, db: AsyncSession) -> None:
         self.db = db
 
-    async def create_update(self, model: FinancialInstitutions):
+    async def create_update(self, model: FinancialInstitution):
 
         try:
             self.db.add(model)
@@ -35,10 +35,10 @@ class FinancialInstitutionsRepo:
         self, type: InstitutionType | None = None, params: Params | None = None
     ):
 
-        query = select(FinancialInstitutions)
+        query = select(FinancialInstitution)
         if type is not None:
-            query = query.where(FinancialInstitutions.type == type)
+            query = query.where(FinancialInstitution.type == type)
 
-        query = query.order_by(FinancialInstitutions.name, FinancialInstitutions.type)
+        query = query.order_by(FinancialInstitution.name, FinancialInstitution.type)
 
         return await apaginate(self.db, query, params=params)

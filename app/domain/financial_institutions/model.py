@@ -17,7 +17,7 @@ class InstitutionType(str, Enum):
     WALLET = "wallet"
 
 
-class FinancialInstitutions(SQLModel, table=True):
+class FinancialInstitution(SQLModel, table=True):
     __tablename__ = "financial_institutions"  # type: ignore
 
     __table_args__ = (

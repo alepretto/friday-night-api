@@ -21,14 +21,15 @@ class User(SQLModel, table=True):
     username: Optional[str] = Field(default=None)
     avatar_url: Optional[str] = Field(default=None)
     language: str = Field(
-        sa_column=Column(String(), server_default="pt-br", nullable=False)
+        default=None, sa_column=Column(String(), server_default="pt-br", nullable=False)
     )
 
     is_premium: bool = Field(default=False)
     is_active: bool = Field(default=True)
     role: str = Field(default="user")
     created_at: datetime = Field(
+        default=None,
         sa_column=Column(
             TIMESTAMP(timezone=True), server_default=func.now(), nullable=False
-        )
+        ),
     )

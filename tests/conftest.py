@@ -1,5 +1,3 @@
-import uuid
-from datetime import datetime, timezone
 from unittest.mock import AsyncMock
 
 import pytest
@@ -12,6 +10,7 @@ from testcontainers.postgres import PostgresContainer
 from app import domain
 from app.api.deps.core import get_db, get_supabase_client
 from app.main import app
+from tests.factories import FinancialInstitutionFactory, UserFactory
 
 
 @pytest.fixture(scope="session")
@@ -41,36 +40,8 @@ async def db_session(db_url):
 @pytest_asyncio.fixture
 async def user_factory(db_session):
 
-    async def _criar_usuario(
-        id_=None,
-        email="padrao@fridaynight.com",
-        first_name="Usuário",
-        last_name="Padrão",
-        telegram_id=None,
-        language="pt-br",
-        created_at=None,
-        is_premium=False,
-        is_active=True,
-        role="user",
-    ):
-        if id_ is None:
-            id_ = uuid.uuid4()
-
-        if created_at is None:
-            created_at = datetime.now(tz=timezone.utc)
-
-        novo_usuario = domain.User(
-            id=id_,
-            email=email,
-            first_name=first_name,
-            last_name=last_name,
-            telegram_id=telegram_id,
-            language=language,
-            created_at=created_at,
-            is_premium=is_premium,
-            is_active=is_active,
-            role=role,
-        )
+    async def _criar_usuario(**kwargs):
+        novo_usuario = UserFactory().build(**kwargs)
         db_session.add(novo_usuario)
         await db_session.commit()
         await db_session.refresh(novo_usuario)
@@ -82,7 +53,7 @@ async def user_factory(db_session):
 @pytest_asyncio.fixture
 async def cliente_autenticado(user_factory, db_session):
 
-    usuario_test = await user_factory()
+    usuario_test = await user_factory(is_active=True)
 
     mock_supabase = AsyncMock()
 
@@ -104,3 +75,17 @@ async def cliente_autenticado(user_factory, db_session):
         yield client, usuario_test
 
     app.dependency_overrides.clear()
+
+
+@pytest_asyncio.fixture
+async def financial_institutions_factory(db_session):
+
+    async def _cria_financial_institution(**kwargs):
+
+        model = FinancialInstitutionFactory().build(**kwargs)
+        db_session.add(model)
+        await db_session.commit()
+        await db_session.refresh(model)
+        return model
+
+    return _cria_financial_institution
