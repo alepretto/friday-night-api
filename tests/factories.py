@@ -9,3 +9,15 @@ class UserFactory(SQLAlchemyFactory[domain.User]):
 
 class FinancialInstitutionFactory(SQLAlchemyFactory[domain.FinancialInstitution]):
     __model__ = domain.FinancialInstitution
+
+
+class AccountFactory(SQLAlchemyFactory[domain.Account]):
+    __model__ = domain.Account
+
+    @classmethod
+    def user_id(cls):
+        return UserFactory.build().id
+
+    @classmethod
+    def institution_id(cls):
+        return FinancialInstitutionFactory.build().id

@@ -10,7 +10,7 @@ from testcontainers.postgres import PostgresContainer
 from app import domain
 from app.api.deps.core import get_db, get_supabase_client
 from app.main import app
-from tests.factories import FinancialInstitutionFactory, UserFactory
+from tests.factories import AccountFactory, FinancialInstitutionFactory, UserFactory
 
 
 @pytest.fixture(scope="session")
@@ -89,3 +89,26 @@ async def financial_institutions_factory(db_session):
         return model
 
     return _cria_financial_institution
+
+
+@pytest_asyncio.fixture
+async def account_factory(db_session, user_factory, financial_institutions_factory):
+
+    async def _cria_account(**kwargs):
+
+        if "user_id" not in kwargs:
+            user = await user_factory()
+            kwargs["user_id"] = user.id
+
+        if "financial_institution_id" not in kwargs:
+            financial_institution = await financial_institutions_factory()
+            kwargs["financial_institution_id"] = financial_institution.id
+
+        model = AccountFactory.build(**kwargs)
+        db_session.add(model)
+        await db_session.commit()
+        await db_session.refresh(model)
+
+        return model
+
+    return _cria_account

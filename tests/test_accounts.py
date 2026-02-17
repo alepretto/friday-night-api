@@ -44,3 +44,17 @@ async def test_create_account_error(
 
     response_2 = await client.post("/api/v1/accounts", json=payload)
     assert response_2.status_code == 400
+
+
+@pytest.mark.asyncio
+async def test_listagem_account(cliente_autenticado, account_factory):
+
+    client, user = cliente_autenticado
+
+    account1 = await account_factory(user_id=user.id)
+    account2 = await account_factory(user_id=user.id)
+
+    response = await client.get("/api/v1/accounts")
+
+    assert response.status_code == 200
+    assert response.json()["total"] == 2
