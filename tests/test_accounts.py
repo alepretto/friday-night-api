@@ -51,8 +51,8 @@ async def test_listagem_account(cliente_autenticado, account_factory):
 
     client, user = cliente_autenticado
 
-    account1 = await account_factory(user_id=user.id)
-    account2 = await account_factory(user_id=user.id)
+    _ = await account_factory(user_id=user.id)
+    _ = await account_factory(user_id=user.id)
 
     response = await client.get("/api/v1/accounts")
 

@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import select
 
 from app.domain.accounts.exceptions import AccountAlreadyExists
-from app.domain.accounts.model import Account, AccountType
+from app.domain.accounts.model import Account, AccountStatus, AccountType
 
 
 class AccountRepo:
@@ -36,8 +36,8 @@ class AccountRepo:
         self,
         user_id: uuid.UUID,
         financial_institution_id: uuid.UUID | None = None,
-        status: AccountType | None = None,
-        type: str | None = None,
+        status: AccountStatus | None = None,
+        type: AccountType | None = None,
         params: Params | None = None,
     ):
 

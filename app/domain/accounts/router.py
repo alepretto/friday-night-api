@@ -6,7 +6,7 @@ from fastapi_pagination import Page
 
 from app.api.deps.core import get_current_user
 from app.api.deps.domain import get_account_service
-from app.domain.accounts.model import AccountType
+from app.domain.accounts.model import AccountStatus, AccountType
 from app.domain.accounts.service import AccountService
 from app.domain.user.model import User
 
@@ -28,8 +28,8 @@ async def create_account(
 @router.get("", response_model=Page[AccountResponse])
 async def list_accounts(
     financial_institution_id: uuid.UUID | None = None,
-    status: AccountType | None = None,
-    type: str | None = None,
+    status: AccountStatus | None = None,
+    type: AccountType | None = None,
     service: AccountService = Depends(get_account_service),
     user: User = Depends(get_current_user),
 ):
