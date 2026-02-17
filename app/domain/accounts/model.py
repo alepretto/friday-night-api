@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum, auto
 from typing import Optional
 from uuid import UUID
@@ -29,9 +29,9 @@ class Account(SQLModel, table=True):
     status: AccountStatus
     type: AccountType
     subtype: Optional[str] = None
-    created_at: datetime = Field(default_factory=func.now)
+    created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(
-        default=None,
+        default_factory=datetime.utcnow,
         sa_column=Column(
             TIMESTAMP(timezone=True), server_default=func.now(), onupdate=func.now()
         ),
