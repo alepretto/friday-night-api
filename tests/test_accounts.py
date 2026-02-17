@@ -20,3 +20,26 @@ async def test_create_account_success(
     response = await client.post("/api/v1/accounts", json=payload)
 
     assert response.status_code == 200
+
+
+@pytest.mark.asyncio
+async def test_create_account_error(
+    cliente_autenticado, financial_institutions_factory
+):
+    """
+    Verifica que a criação de uma conta funciona e que os campos de timestamp são preenchidos.
+    """
+
+    institution = await financial_institutions_factory()
+
+    client, _ = cliente_autenticado
+    payload = {
+        "financial_institution_id": str(institution.id),
+        "status": "activate",
+        "type": "bank",
+    }
+    response = await client.post("/api/v1/accounts", json=payload)
+    assert response.status_code == 200
+
+    response_2 = await client.post("/api/v1/accounts", json=payload)
+    assert response_2.status_code == 400

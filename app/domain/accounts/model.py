@@ -4,7 +4,7 @@ from enum import Enum
 from typing import Optional
 from uuid import UUID
 
-from sqlalchemy import TIMESTAMP, Column, UniqueConstraint, func
+from sqlalchemy import TIMESTAMP, Column, Index, func, text
 from sqlmodel import Field, SQLModel
 
 
@@ -23,12 +23,23 @@ class AccountStatus(str, Enum):
 class Account(SQLModel, table=True):
     __tablename__ = "accounts"  # type: ignore
     __table_args__ = (
-        UniqueConstraint(
+        Index(
+            "unique_account_with_subtype",
             "user_id",
             "financial_institution_id",
             "type",
             "subtype",
-            name="unique_account",
+            unique=True,
+            postgresql_where=text("subtype IS NOT NULL"),
+        ),
+        # Índice para quando subtype é NULL
+        Index(
+            "unique_account_null_subtype",
+            "user_id",
+            "financial_institution_id",
+            "type",
+            unique=True,
+            postgresql_where=text("subtype IS NULL"),
         ),
     )
 
