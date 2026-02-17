@@ -1,8 +1,13 @@
+import uuid
+
+from fastapi_pagination import Params
+from fastapi_pagination.ext.sqlalchemy import apaginate
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlmodel import select
 
 from app.domain.accounts.exceptions import AccountAlreadyExists
-from app.domain.accounts.model import Account
+from app.domain.accounts.model import Account, AccountStatus, AccountType
 
 
 class AccountRepo:
@@ -26,3 +31,29 @@ class AccountRepo:
                 type=model.type,
                 subtype=model.subtype,
             ) from None
+
+    async def list(
+        self,
+        user_id: uuid.UUID,
+        financial_institution_id: uuid.UUID | None = None,
+        status: AccountStatus | None = None,
+        type: AccountType | None = None,
+        params: Params | None = None,
+    ):
+
+        query = select(Account).where(Account.user_id == user_id)
+
+        if financial_institution_id is not None:
+            query = query.where(
+                Account.financial_institution_id == financial_institution_id
+            )
+
+        if status is not None:
+            query = query.where(Account.status == status)
+
+        if type is not None:
+            query = query.where(Account.type == type)
+
+        query = query.order_by(Account.created_at)  # type: ignore
+
+        return await apaginate(self.db, query, params=params)

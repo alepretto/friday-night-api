@@ -52,13 +52,13 @@ class Account(SQLModel, table=True):
     type: AccountType
     subtype: Optional[str] = None
 
-    created_at: Optional[datetime] = Field(
+    created_at: datetime = Field(
         default=None,
         sa_column=Column(
             TIMESTAMP(timezone=True), server_default=func.now(), nullable=False
         ),
     )
-    updated_at: Optional[datetime] = Field(
+    updated_at: datetime = Field(
         default=None,
         sa_column=Column(
             TIMESTAMP(timezone=True),
