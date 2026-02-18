@@ -1,7 +1,7 @@
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.domain.transaction_tags.excpetions import TagAlreadExists
+from app.domain.transaction_tags.exceptions import TagAlreadExists
 from app.domain.transaction_tags.model import TransactionTag
 
 

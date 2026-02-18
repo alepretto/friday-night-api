@@ -33,7 +33,7 @@ class TransactionTag(SQLModel, table=True):
     subcategory: str = Field(index=True)
     type: TransactionTagType
 
-    is_activate: bool = Field(default=True)
+    is_active: bool = Field(default=True)
 
     created_at: Optional[datetime] = Field(
         default=None,
