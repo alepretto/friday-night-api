@@ -79,3 +79,9 @@ class TransactionFactory(SQLAlchemyFactory[domain.Transaction]):
     @classmethod
     def currency_id(cls):
         return CurrencyFactory.build().id
+
+
+class HoldingFactory(SQLAlchemyFactory[domain.Holding]):
+    __model__ = domain.Holding
+
+    __set_relationships__ = False

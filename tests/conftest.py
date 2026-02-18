@@ -14,6 +14,7 @@ from tests.factories import (
     AccountFactory,
     CurrencyFactory,
     FinancialInstitutionFactory,
+    HoldingFactory,
     PaymentMethodFactory,
     TransactionFactory,
     TransactionTagFactory,
@@ -200,3 +201,25 @@ async def transaction_factory(
         return transaction
 
     return _cria_transaction
+
+
+@pytest_asyncio.fixture
+async def holding_factory(db_session, user_factory, transaction_factory):
+
+    async def _cria_holding(**kwargs):
+
+        if "user_id" not in kwargs:
+            user = await user_factory()
+            kwargs["user_id"] = user.id
+
+        if "transaction_id" not in kwargs:
+            transaction = await transaction_factory()
+            kwargs["transaction_id"] = transaction.id
+
+        model = HoldingFactory.build(**kwargs)
+        db_session.add(model)
+        await db_session.commit()
+        await db_session.refresh(model)
+        return model
+
+    return _cria_holding

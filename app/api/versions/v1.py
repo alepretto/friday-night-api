@@ -5,6 +5,7 @@ from app.domain.currencies.router import router as currencies_router
 from app.domain.financial_institutions.router import (
     router as financial_institutions_router,
 )
+from app.domain.holdings.router import router as holding_router
 from app.domain.payment_methods.router import router as payment_methods_router
 from app.domain.transaction_tags.router import router as tag_router
 from app.domain.transactions.router import router as transaction_router
@@ -21,3 +22,4 @@ v1_router.include_router(currencies_router)
 v1_router.include_router(tag_router)
 v1_router.include_router(payment_methods_router)
 v1_router.include_router(transaction_router)
+v1_router.include_router(holding_router)
