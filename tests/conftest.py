@@ -14,7 +14,9 @@ from tests.factories import (
     AccountFactory,
     CurrencyFactory,
     FinancialInstitutionFactory,
+    HoldingFactory,
     PaymentMethodFactory,
+    TransactionFactory,
     TransactionTagFactory,
     UserFactory,
 )
@@ -166,3 +168,67 @@ async def transaction_tag_factory(db_session, user_factory):
         return model
 
     return _cria_tag
+
+
+@pytest_asyncio.fixture
+async def transaction_factory(
+    db_session,
+    user_factory,
+    account_factory,
+    transaction_tag_factory,
+    currency_factory,
+    payment_method_factory,
+):
+
+    async def _cria_transaction(**kwargs):
+
+        if "user_id" not in kwargs:
+            user = await user_factory()
+            kwargs["user_id"] = user.id
+
+        if "account_id" not in kwargs:
+            account = await account_factory()
+            kwargs["account_id"] = account.id
+
+        if "transaction_tag_id" not in kwargs:
+            tag = await transaction_tag_factory()
+            kwargs["transaction_tag_id"] = tag.id
+
+        if "currency_id" not in kwargs:
+            currency = await currency_factory()
+            kwargs["currency_id"] = currency.id
+
+        if "payment_method_id" not in kwargs:
+            method = await payment_method_factory()
+            kwargs["payment_method_id"] = method.id
+
+        transaction = TransactionFactory().build(**kwargs)
+        db_session.add(transaction)
+        await db_session.commit()
+        await db_session.refresh(transaction)
+
+        return transaction
+
+    return _cria_transaction
+
+
+@pytest_asyncio.fixture
+async def holding_factory(db_session, user_factory, transaction_factory):
+
+    async def _cria_holding(**kwargs):
+
+        if "user_id" not in kwargs:
+            user = await user_factory()
+            kwargs["user_id"] = user.id
+
+        if "transaction_id" not in kwargs:
+            transaction = await transaction_factory()
+            kwargs["transaction_id"] = transaction.id
+
+        model = HoldingFactory.build(**kwargs)
+        db_session.add(model)
+        await db_session.commit()
+        await db_session.refresh(model)
+        return model
+
+    return _cria_holding
