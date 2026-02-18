@@ -22,10 +22,10 @@ async def test_transaction_create(
         "transaction_tag_id": str(tag.id),
         "payment_method_id": str(payment_method.id),
         "currency_id": str(currency.id),
-        "value": 100,
-        "date_transaction": "2020-03-01",
+        "value": 100.0,
+        "date_transaction": "2020-03-01 10:15",
     }
 
-    response = await client.post("/transaction", json=payload)
+    response = await client.post("/api/v1/transactions", json=payload)
 
     assert response.status_code == 201
