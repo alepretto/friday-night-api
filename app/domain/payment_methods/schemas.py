@@ -9,7 +9,7 @@ class PaymentMethodCreate(SQLModel):
     is_active: bool = True
 
 
-class PaymentMethodResposne(PaymentMethodCreate):
+class PaymentMethodResponse(PaymentMethodCreate):
     id: uuid.UUID
     user_id: uuid.UUID
 
