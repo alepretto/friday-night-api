@@ -10,7 +10,7 @@ class TagAlreadExists(FridayNightException):
         category: str,
         subcategory: str,
         type: TransactionTagType,
-        status_code: int = HTTPStatus.BAD_REQUEST,
+        status_code: int = HTTPStatus.CONFLICT,
     ) -> None:
 
         message = f"Tag Already Exists! {category} - {subcategory} - {type}"
