@@ -1,4 +1,3 @@
-import uuid
 from datetime import datetime
 from enum import Enum
 from typing import Optional
@@ -6,6 +5,7 @@ from uuid import UUID
 
 from sqlalchemy import TIMESTAMP, Column, Index, func, text
 from sqlmodel import Field, SQLModel
+from uuid6 import uuid7
 
 
 class AccountType(str, Enum):
@@ -43,7 +43,9 @@ class Account(SQLModel, table=True):
         ),
     )
 
-    id: UUID = Field(default_factory=uuid.uuid4, primary_key=True)
+    id: UUID = Field(
+        primary_key=True, index=True, nullable=False, default_factory=uuid7
+    )
     user_id: UUID = Field(foreign_key="users.id", sa_column_kwargs={"unique": False})
     financial_institution_id: UUID = Field(
         foreign_key="financial_institutions.id", sa_column_kwargs={"unique": False}
@@ -64,6 +66,6 @@ class Account(SQLModel, table=True):
             TIMESTAMP(timezone=True),
             server_default=func.now(),
             onupdate=func.now(),
-            nullable=True,
+            nullable=False,
         ),
     )

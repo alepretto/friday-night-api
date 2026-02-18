@@ -4,6 +4,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.api.deps.core import get_db
 from app.domain.accounts.repo import AccountRepo
 from app.domain.accounts.service import AccountService
+from app.domain.currencies.repo import CurrencyRepo
+from app.domain.currencies.service import CurrencyService
 from app.domain.financial_institutions.repo import FinancialInstitutionsRepo
 from app.domain.financial_institutions.service import FinancialInstitutionService
 from app.domain.user.repo import UserRepo
@@ -25,3 +27,8 @@ def get_financial_institution_service(db: AsyncSession = Depends(get_db)):
 def get_account_service(db: AsyncSession = Depends(get_db)):
     repo = AccountRepo(db)
     return AccountService(repo)
+
+
+def get_currency_service(db: AsyncSession = Depends(get_db)):
+    repo = CurrencyRepo(db)
+    return CurrencyService(repo)
