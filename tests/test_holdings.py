@@ -15,7 +15,6 @@ async def test_holding_create(
 
     payload = {
         "transaction_id": str(transaction.id),
-        "user_id": str(user.id),
         "symbol": "BTC",
         "asset_type": "cripto",
         "quantity": 0.005,
