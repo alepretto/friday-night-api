@@ -1,11 +1,14 @@
 from datetime import datetime
 from enum import Enum
-from typing import Optional
+from typing import TYPE_CHECKING, Optional
 from uuid import UUID
 
 from sqlalchemy import TIMESTAMP, Column, Index, func, text
-from sqlmodel import Field, SQLModel
+from sqlmodel import Field, Relationship, SQLModel
 from uuid6 import uuid7
+
+if TYPE_CHECKING:
+    from app.domain.user.model import User
 
 
 class AccountType(str, Enum):
@@ -46,7 +49,9 @@ class Account(SQLModel, table=True):
     id: UUID = Field(
         primary_key=True, index=True, nullable=False, default_factory=uuid7
     )
-    user_id: UUID = Field(foreign_key="users.id", sa_column_kwargs={"unique": False})
+    user_id: UUID = Field(
+        foreign_key="users.id", sa_column_kwargs={"unique": False}, ondelete="CASCADE"
+    )
     financial_institution_id: UUID = Field(
         foreign_key="financial_institutions.id",
         sa_column_kwargs={"unique": False},
@@ -71,3 +76,5 @@ class Account(SQLModel, table=True):
             nullable=False,
         ),
     )
+
+    user: "User" = Relationship(back_populates="accounts")

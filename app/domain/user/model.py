@@ -1,10 +1,13 @@
 import uuid
 from datetime import datetime
-from typing import Optional
+from typing import TYPE_CHECKING, Optional
 
 from sqlalchemy import Column
 from sqlalchemy.sql.sqltypes import TIMESTAMP, String
-from sqlmodel import BigInteger, Field, SQLModel, func
+from sqlmodel import BigInteger, Field, Relationship, SQLModel, func
+
+if TYPE_CHECKING:
+    from app.domain.accounts.model import Account
 
 
 class User(SQLModel, table=True):
@@ -33,3 +36,5 @@ class User(SQLModel, table=True):
             TIMESTAMP(timezone=True), server_default=func.now(), nullable=False
         ),
     )
+
+    accounts: list["Account"] = Relationship(back_populates="user")

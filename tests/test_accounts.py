@@ -12,6 +12,7 @@ async def test_create_account_success(
     institution = await financial_institutions_factory()
 
     client, _ = cliente_autenticado
+
     payload = {
         "financial_institution_id": str(institution.id),
         "status": "activate",
