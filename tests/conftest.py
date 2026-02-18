@@ -10,7 +10,14 @@ from testcontainers.postgres import PostgresContainer
 from app import domain
 from app.api.deps.core import get_db, get_supabase_client
 from app.main import app
-from tests.factories import AccountFactory, FinancialInstitutionFactory, UserFactory
+from tests.factories import (
+    AccountFactory,
+    CurrencyFactory,
+    FinancialInstitutionFactory,
+    PaymentMethodFactory,
+    TransactionTagFactory,
+    UserFactory,
+)
 
 
 @pytest.fixture(scope="session")
@@ -112,3 +119,50 @@ async def account_factory(db_session, user_factory, financial_institutions_facto
         return model
 
     return _cria_account
+
+
+@pytest_asyncio.fixture
+async def payment_method_factory(db_session, user_factory):
+
+    async def _cria_payment(**kwargs):
+        if "user_id" not in kwargs:
+            user = await user_factory(is_active=True)
+            kwargs["user_id"] = user.id
+
+        model = PaymentMethodFactory.build(**kwargs)
+        db_session.add(model)
+        await db_session.commit()
+        await db_session.refresh(model)
+        return model
+
+    return _cria_payment
+
+
+@pytest_asyncio.fixture
+async def currency_factory(db_session):
+
+    async def _cria_currency(**kwargs):
+        model = CurrencyFactory.build(**kwargs)
+        db_session.add(model)
+        await db_session.commit()
+        await db_session.refresh(model)
+        return model
+
+    return _cria_currency
+
+
+@pytest_asyncio.fixture
+async def transaction_tag_factory(db_session, user_factory):
+
+    async def _cria_tag(**kwargs):
+        if "user_id" not in kwargs:
+            user = await user_factory(is_active=True)
+            kwargs["user_id"] = user.id
+
+        model = TransactionTagFactory.build(**kwargs)
+        db_session.add(model)
+        await db_session.commit()
+        await db_session.refresh(model)
+        return model
+
+    return _cria_tag
