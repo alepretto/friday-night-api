@@ -13,5 +13,7 @@ async def test_transaction_tag_create(cliente_autenticado):
     }
 
     response = await client.post("/api/v1/transaction-tags", json=payload)
-
     assert response.status_code == 201
+
+    response2 = await client.post("/api/v1/transaction-tags", json=payload)
+    assert response2.status_code == 409
