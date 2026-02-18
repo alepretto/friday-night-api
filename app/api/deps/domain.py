@@ -1,3 +1,5 @@
+from typing import Annotated
+
 from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -8,6 +10,8 @@ from app.domain.currencies.repo import CurrencyRepo
 from app.domain.currencies.service import CurrencyService
 from app.domain.financial_institutions.repo import FinancialInstitutionsRepo
 from app.domain.financial_institutions.service import FinancialInstitutionService
+from app.domain.transaction_tags.repo import TransactionTagRepo
+from app.domain.transaction_tags.service import TransactionTagService
 from app.domain.user.repo import UserRepo
 from app.domain.user.service import UserService
 
@@ -32,3 +36,8 @@ def get_account_service(db: AsyncSession = Depends(get_db)):
 def get_currency_service(db: AsyncSession = Depends(get_db)):
     repo = CurrencyRepo(db)
     return CurrencyService(repo)
+
+
+def get_transaction_tag_service(db: Annotated[AsyncSession, Depends(get_db)]):
+    repo = TransactionTagRepo(db)
+    return TransactionTagService(repo)

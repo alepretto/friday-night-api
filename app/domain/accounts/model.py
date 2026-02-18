@@ -48,7 +48,9 @@ class Account(SQLModel, table=True):
     )
     user_id: UUID = Field(foreign_key="users.id", sa_column_kwargs={"unique": False})
     financial_institution_id: UUID = Field(
-        foreign_key="financial_institutions.id", sa_column_kwargs={"unique": False}
+        foreign_key="financial_institutions.id",
+        sa_column_kwargs={"unique": False},
+        index=True,
     )
     status: AccountStatus
     type: AccountType
