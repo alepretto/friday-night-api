@@ -21,4 +21,6 @@ class CurrencyRepo:
         except IntegrityError:
             await self.db.rollback()
 
-            raise CurrencyAlreadyExists(label=model.label, symbol=model.symbol)
+            raise CurrencyAlreadyExists(
+                label=model.label, symbol=model.symbol
+            ) from None

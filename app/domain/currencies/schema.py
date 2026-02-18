@@ -1,7 +1,7 @@
 import uuid
+from datetime import datetime
 
 from sqlmodel import SQLModel
-from supabase_auth import datetime
 
 from app.domain.currencies.model import CurrencyType
 

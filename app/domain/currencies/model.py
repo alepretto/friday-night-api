@@ -23,8 +23,8 @@ class Currency(SQLModel, table=True):
     id: uuid.UUID = Field(
         primary_key=True, index=True, nullable=False, default_factory=uuid7
     )
-    label: str = Field(index=True, unique=True)
-    symbol: str = Field(index=True, unique=True)
+    label: str = Field(index=True)
+    symbol: str = Field(index=True)
     type: CurrencyType
 
     created_at: Optional[datetime] = Field(

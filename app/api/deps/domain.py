@@ -29,6 +29,6 @@ def get_account_service(db: AsyncSession = Depends(get_db)):
     return AccountService(repo)
 
 
-def get_currrency_service(db: AsyncSession = Depends(get_db)):
+def get_currency_service(db: AsyncSession = Depends(get_db)):
     repo = CurrencyRepo(db)
     return CurrencyService(repo)
