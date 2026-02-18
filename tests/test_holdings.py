@@ -2,7 +2,7 @@ import pytest
 
 
 @pytest.mark.asyncio
-async def test_honding_create(
+async def test_holding_create(
     cliente_autenticado, transaction_factory, payment_method_factory
 ):
 

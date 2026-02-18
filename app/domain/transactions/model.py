@@ -4,7 +4,7 @@ from decimal import Decimal
 from typing import Optional
 
 from sqlalchemy import TIMESTAMP, Column
-from sqlmodel import DECIMAL, Field, Relationship, SQLModel, func
+from sqlmodel import DECIMAL, Field, SQLModel, func
 from uuid6 import uuid7
 
 

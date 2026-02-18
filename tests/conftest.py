@@ -172,7 +172,12 @@ async def transaction_tag_factory(db_session, user_factory):
 
 @pytest_asyncio.fixture
 async def transaction_factory(
-    db_session, user_factory, account_factory, transaction_tag_factory, currency_factory
+    db_session,
+    user_factory,
+    account_factory,
+    transaction_tag_factory,
+    currency_factory,
+    payment_method_factory,
 ):
 
     async def _cria_transaction(**kwargs):
@@ -192,6 +197,10 @@ async def transaction_factory(
         if "currency_id" not in kwargs:
             currency = await currency_factory()
             kwargs["currency_id"] = currency.id
+
+        if "payment_method_id" not in kwargs:
+            method = await payment_method_factory()
+            kwargs["payment_method_id"] = method.id
 
         transaction = TransactionFactory().build(**kwargs)
         db_session.add(transaction)

@@ -62,11 +62,11 @@ class TransactionFactory(SQLAlchemyFactory[domain.Transaction]):
 
     @classmethod
     def user_id(cls):
-        return UserFactory.build()
+        return UserFactory.build().id
 
     @classmethod
     def account_id(cls):
-        return AccountFactory.build()
+        return AccountFactory.build().id
 
     @classmethod
     def transaction_tag_id(cls):

@@ -12,7 +12,7 @@ from uuid6 import uuid7
 class AssetType(str, Enum):
     CRIPTO = "cripto"
     STOCK = "stock"
-    ETF = "ETF"
+    ETF = "etf"
     BOND = "bond"
 
 
@@ -22,7 +22,7 @@ class Holding(SQLModel, table=True):
     id: uuid.UUID = Field(primary_key=True, index=True, default_factory=uuid7)
 
     transaction_id: uuid.UUID = Field(foreign_key="transactions.id", index=True)
-    user_id: uuid.UUID = Field(foreign_key="users.id", index=True)
+    user_id: uuid.UUID = Field(foreign_key="users.id", index=True, ondelete="CASCADE")
 
     symbol: str = Field(index=True)
     asset_type: AssetType

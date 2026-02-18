@@ -11,7 +11,6 @@ from app.domain.holdings.model import AssetType
 
 class HoldingCreate(SQLModel):
     transaction_id: uuid.UUID
-    user_id: uuid.UUID
     symbol: str
     asset_type: AssetType
     quantity: Decimal
