@@ -18,6 +18,7 @@ class AssetType(str, Enum):
 
 class Holding(SQLModel, table=True):
     __tablename__ = "holdings"  # type: ignore
+    __table_args__ = ({"schema": "finance"},)
 
     id: uuid.UUID = Field(primary_key=True, index=True, default_factory=uuid7)
 
