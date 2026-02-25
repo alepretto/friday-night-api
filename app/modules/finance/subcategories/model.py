@@ -7,7 +7,7 @@ from uuid6 import uuid7
 
 
 class Subcategory(SQLModel, table=True):
-    __tablename__ = "subcategories"
+    __tablename__ = "subcategories"  # type: ignore
     __table_args__ = (
         UniqueConstraint("category_id", "label", name="uq_finance_subcategory"),
         {"schema": "finance"},
