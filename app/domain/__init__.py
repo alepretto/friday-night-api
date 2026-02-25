@@ -7,6 +7,8 @@ from .transaction_tags.model import TransactionTag
 from .transactions.model import Transaction
 from .user.model import User
 
+from . import finance
+
 __all__ = [
     "Account",
     "Currency",
@@ -16,4 +18,5 @@ __all__ = [
     "TransactionTag",
     "Transaction",
     "User",
+    "finance",
 ]

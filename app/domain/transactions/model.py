@@ -15,7 +15,7 @@ class Transaction(SQLModel, table=True):
 
     user_id: uuid.UUID = Field(foreign_key="users.id", index=True, ondelete="CASCADE")
     account_id: uuid.UUID = Field(foreign_key="accounts.id", index=True)
-    transaction_tag_id: uuid.UUID = Field(foreign_key="transaction_tags.id", index=True)
+    tag_id: uuid.UUID = Field(foreign_key="finance.tags.id", index=True)
     payment_method_id: uuid.UUID = Field(foreign_key="payment_methods.id", index=True)
     currency_id: uuid.UUID = Field(foreign_key="currencies.id")
 

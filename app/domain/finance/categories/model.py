@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 from enum import Enum
 import uuid
 from uuid6 import uuid7
@@ -19,7 +19,7 @@ class Category(SQLModel, table=True):
         {"schema": "finance"},
     )
 
-    id: uuid.UUDI = Field(default_factory=uuid7, primary_key=True, index=True)
+    id: uuid.UUID = Field(default_factory=uuid7, primary_key=True, index=True)
     user_id: uuid.UUID = Field(foreign_key="users.id", index=True, ondelete="CASCADE")
 
     label: str = Field(index=True)

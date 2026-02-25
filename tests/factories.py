@@ -39,14 +39,42 @@ class PaymentMethodFactory(SQLAlchemyFactory[domain.PaymentMethod]):
         return UserFactory.build().id
 
 
-class TransactionTagFactory(SQLAlchemyFactory[domain.TransactionTag]):
-    __model__ = domain.TransactionTag
+class CategoryFactory(SQLAlchemyFactory[domain.finance.Category]):
+    __model__ = domain.finance.Category
 
     __set_relationships__ = False
 
     @classmethod
     def user_id(cls):
         return UserFactory.build().id
+
+
+class SubcategoryFactory(SQLAlchemyFactory[domain.finance.Subcategory]):
+    __model__ = domain.finance.Subcategory
+
+    __set_relationships__ = False
+
+    @classmethod
+    def category_id(cls):
+        return CategoryFactory.build().id
+
+
+class TagFactory(SQLAlchemyFactory[domain.finance.Tag]):
+    __model__ = domain.finance.Tag
+
+    __set_relationships__ = False
+
+    @classmethod
+    def user_id(cls):
+        return UserFactory.build().id
+
+    @classmethod
+    def category_id(cls):
+        return CategoryFactory.build().id
+
+    @classmethod
+    def subcategory_id(cls):
+        return SubcategoryFactory.build().id
 
 
 class CurrencyFactory(SQLAlchemyFactory[domain.Currency]):
@@ -69,8 +97,8 @@ class TransactionFactory(SQLAlchemyFactory[domain.Transaction]):
         return AccountFactory.build().id
 
     @classmethod
-    def transaction_tag_id(cls):
-        return TransactionTagFactory.build().id
+    def tag_id(cls):
+        return TagFactory.build().id
 
     @classmethod
     def payment_method_id(cls):

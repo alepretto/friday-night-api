@@ -4,7 +4,7 @@ import pytest
 import pytest_asyncio
 from httpx import ASGITransport, AsyncClient
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
-from sqlmodel import SQLModel
+from sqlmodel import SQLModel, text
 from testcontainers.postgres import PostgresContainer
 
 from app import domain
@@ -12,12 +12,14 @@ from app.api.deps.core import get_db, get_supabase_client
 from app.main import app
 from tests.factories import (
     AccountFactory,
+    CategoryFactory,
     CurrencyFactory,
     FinancialInstitutionFactory,
     HoldingFactory,
     PaymentMethodFactory,
+    SubcategoryFactory,
+    TagFactory,
     TransactionFactory,
-    TransactionTagFactory,
     UserFactory,
 )
 
@@ -35,6 +37,7 @@ async def db_session(db_url):
     engine = create_async_engine(db_url)
 
     async with engine.begin() as conn:
+        await conn.execute(text("CREATE SCHEMA IF NOT EXISTS finance"))
         await conn.run_sync(SQLModel.metadata.create_all)
 
     TestingSessionLocal = async_sessionmaker(bind=engine, expire_on_commit=False)
@@ -154,17 +157,64 @@ async def currency_factory(db_session):
 
 
 @pytest_asyncio.fixture
-async def transaction_tag_factory(db_session, user_factory):
+async def category_factory(db_session, user_factory):
 
-    async def _cria_tag(**kwargs):
+    async def _cria_category(**kwargs):
+
         if "user_id" not in kwargs:
-            user = await user_factory(is_active=True)
+            user = await user_factory()
             kwargs["user_id"] = user.id
 
-        model = TransactionTagFactory.build(**kwargs)
+        category = CategoryFactory.build(**kwargs)
+        db_session.add(category)
+        await db_session.commit()
+        await db_session.refresh(category)
+
+        return category
+
+    return _cria_category
+
+
+@pytest_asyncio.fixture
+async def subcategory_factory(db_session, category_factory):
+
+    async def _cria_subcategory(**kwargs):
+
+        if "category_id" not in kwargs:
+            category = await category_factory()
+            kwargs["category_id"] = category.id
+
+        model = SubcategoryFactory.build(**kwargs)
         db_session.add(model)
         await db_session.commit()
         await db_session.refresh(model)
+        return model
+
+    return _cria_subcategory
+
+
+@pytest_asyncio.fixture
+async def tag_factory(db_session, user_factory, category_factory, subcategory_factory):
+
+    async def _cria_tag(**kwargs):
+
+        if "user_id" not in kwargs:
+            user = await user_factory()
+            kwargs["user_id"] = user.id
+
+        if "category_id" not in kwargs:
+            category = await category_factory()
+            kwargs["category_id"] = category.id
+
+        if "subcategory_id" not in kwargs:
+            subcategory = await subcategory_factory()
+            kwargs["subcategory_id"] = subcategory.id
+
+        model = TagFactory.build(**kwargs)
+        db_session.add(model)
+        await db_session.commit()
+        await db_session.refresh(model)
+
         return model
 
     return _cria_tag
@@ -175,7 +225,7 @@ async def transaction_factory(
     db_session,
     user_factory,
     account_factory,
-    transaction_tag_factory,
+    tag_factory,
     currency_factory,
     payment_method_factory,
 ):
@@ -190,9 +240,9 @@ async def transaction_factory(
             account = await account_factory()
             kwargs["account_id"] = account.id
 
-        if "transaction_tag_id" not in kwargs:
-            tag = await transaction_tag_factory()
-            kwargs["transaction_tag_id"] = tag.id
+        if "tag_id" not in kwargs:
+            tag = await tag_factory()
+            kwargs["tag_id"] = tag.id
 
         if "currency_id" not in kwargs:
             currency = await currency_factory()
