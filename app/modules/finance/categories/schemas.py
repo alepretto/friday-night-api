@@ -5,7 +5,7 @@ from pydantic import field_serializer
 from sqlmodel import SQLModel
 
 from app.core.utils import to_local
-from app.domain.finance.categories.model import CategoryType
+from app.modules.finance.categories.model import CategoryType
 
 
 class CategoryCreate(SQLModel):

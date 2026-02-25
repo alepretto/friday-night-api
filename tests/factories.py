@@ -1,6 +1,7 @@
 from polyfactory.factories.sqlalchemy_factory import SQLAlchemyFactory
 
 from app import domain
+from app import modules
 
 
 class UserFactory(SQLAlchemyFactory[domain.User]):
@@ -39,8 +40,8 @@ class PaymentMethodFactory(SQLAlchemyFactory[domain.PaymentMethod]):
         return UserFactory.build().id
 
 
-class CategoryFactory(SQLAlchemyFactory[domain.finance.Category]):
-    __model__ = domain.finance.Category
+class CategoryFactory(SQLAlchemyFactory[modules.finance.Category]):
+    __model__ = modules.finance.Category
 
     __set_relationships__ = False
 
@@ -49,8 +50,8 @@ class CategoryFactory(SQLAlchemyFactory[domain.finance.Category]):
         return UserFactory.build().id
 
 
-class SubcategoryFactory(SQLAlchemyFactory[domain.finance.Subcategory]):
-    __model__ = domain.finance.Subcategory
+class SubcategoryFactory(SQLAlchemyFactory[modules.finance.Subcategory]):
+    __model__ = modules.finance.Subcategory
 
     __set_relationships__ = False
 
@@ -59,8 +60,8 @@ class SubcategoryFactory(SQLAlchemyFactory[domain.finance.Subcategory]):
         return CategoryFactory.build().id
 
 
-class TagFactory(SQLAlchemyFactory[domain.finance.Tag]):
-    __model__ = domain.finance.Tag
+class TagFactory(SQLAlchemyFactory[modules.finance.Tag]):
+    __model__ = modules.finance.Tag
 
     __set_relationships__ = False
 

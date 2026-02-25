@@ -14,8 +14,6 @@ from app.domain.holdings.repo import HoldingRepo
 from app.domain.holdings.service import HoldingService
 from app.domain.payment_methods.repo import PaymentMethodRepo
 from app.domain.payment_methods.service import PaymentMethodService
-from app.domain.transaction_tags.repo import TransactionTagRepo
-from app.domain.transaction_tags.service import TransactionTagService
 from app.domain.transactions.repo import TransactionRepo
 from app.domain.transactions.service import TransactionService
 from app.domain.user.repo import UserRepo
@@ -42,11 +40,6 @@ def get_account_service(db: AsyncSession = Depends(get_db)):
 def get_currency_service(db: AsyncSession = Depends(get_db)):
     repo = CurrencyRepo(db)
     return CurrencyService(repo)
-
-
-def get_transaction_tag_service(db: Annotated[AsyncSession, Depends(get_db)]):
-    repo = TransactionTagRepo(db)
-    return TransactionTagService(repo)
 
 
 def get_payment_method_service(db: Annotated[AsyncSession, Depends(get_db)]):
