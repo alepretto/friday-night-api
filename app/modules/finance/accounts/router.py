@@ -5,9 +5,9 @@ from fastapi import APIRouter, Depends
 from fastapi_pagination import Page
 
 from app.api.deps.core import get_current_user
-from app.api.deps.domain import get_account_service
-from app.domain.accounts.model import AccountStatus, AccountType
-from app.domain.accounts.service import AccountService
+from app.api.deps.finance import get_account_service
+from app.modules.finance.accounts.model import AccountStatus, AccountType
+from app.modules.finance.accounts.service import AccountService
 from app.modules.user.model import User
 
 from .schemas import AccountCreate, AccountResponse

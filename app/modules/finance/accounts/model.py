@@ -44,6 +44,7 @@ class Account(SQLModel, table=True):
             unique=True,
             postgresql_where=text("subtype IS NULL"),
         ),
+        {"schema": "finance"},
     )
 
     id: UUID = Field(

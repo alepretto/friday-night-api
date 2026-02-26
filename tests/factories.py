@@ -16,8 +16,8 @@ class FinancialInstitutionFactory(SQLAlchemyFactory[domain.FinancialInstitution]
     __set_relationships__ = False
 
 
-class AccountFactory(SQLAlchemyFactory[domain.Account]):
-    __model__ = domain.Account
+class AccountFactory(SQLAlchemyFactory[modules.finance.Account]):
+    __model__ = modules.finance.Account
 
     __set_relationships__ = False
 

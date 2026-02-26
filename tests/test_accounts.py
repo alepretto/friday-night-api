@@ -18,7 +18,7 @@ async def test_create_account_success(
         "status": "activate",
         "type": "bank",
     }
-    response = await client.post("/api/v1/accounts", json=payload)
+    response = await client.post("/api/v1/finance/accounts", json=payload)
 
     assert response.status_code == 201
     assert response.json()["financial_institution_id"] == str(institution.id)
@@ -40,10 +40,10 @@ async def test_create_account_error(
         "status": "activate",
         "type": "bank",
     }
-    response = await client.post("/api/v1/accounts", json=payload)
+    response = await client.post("/api/v1/finance/accounts", json=payload)
     assert response.status_code == 201
 
-    response_2 = await client.post("/api/v1/accounts", json=payload)
+    response_2 = await client.post("/api/v1/finance/accounts", json=payload)
     assert response_2.status_code == 400
 
 
@@ -55,7 +55,7 @@ async def test_listagem_account(cliente_autenticado, account_factory):
     _ = await account_factory(user_id=user.id)
     _ = await account_factory(user_id=user.id)
 
-    response = await client.get("/api/v1/accounts")
+    response = await client.get("/api/v1/finance/accounts")
 
     assert response.status_code == 200
     assert response.json()["total"] == 2

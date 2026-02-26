@@ -4,7 +4,7 @@ from typing import Optional
 
 from sqlmodel import SQLModel
 
-from app.domain.accounts.model import AccountStatus, AccountType
+from app.modules.finance.accounts.model import AccountStatus, AccountType
 
 
 class AccountCreate(SQLModel):

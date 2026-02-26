@@ -6,8 +6,8 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import select
 
-from app.domain.accounts.exceptions import AccountAlreadyExists
-from app.domain.accounts.model import Account, AccountStatus, AccountType
+from app.modules.finance.accounts.exceptions import AccountAlreadyExists
+from app.modules.finance.accounts.model import Account, AccountStatus, AccountType
 
 
 class AccountRepo:
