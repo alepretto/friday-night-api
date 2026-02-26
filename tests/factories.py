@@ -32,8 +32,8 @@ class AccountFactory(SQLAlchemyFactory[modules.finance.Account]):
         return FinancialInstitutionFactory.build().id
 
 
-class PaymentMethodFactory(SQLAlchemyFactory[domain.PaymentMethod]):
-    __model__ = domain.PaymentMethod
+class PaymentMethodFactory(SQLAlchemyFactory[modules.finance.PaymentMethod]):
+    __model__ = modules.finance.PaymentMethod
 
     __set_relationships__ = False
 

@@ -8,7 +8,10 @@ from uuid6 import uuid7
 
 class PaymentMethod(SQLModel, table=True):
     __tablename__ = "payment_methods"  # type: ignore
-    __table_args__ = (Index("payment_method_idx", "user_id", "label", unique=True),)
+    __table_args__ = (
+        Index("payment_method_idx", "user_id", "label", unique=True),
+        {"schema": "finance"},
+    )
 
     id: uuid.UUID = Field(primary_key=True, index=True, default_factory=uuid7)
     user_id: uuid.UUID = Field(foreign_key="users.id", index=True, ondelete="CASCADE")

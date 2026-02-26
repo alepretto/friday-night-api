@@ -4,12 +4,12 @@ from typing import Annotated
 from fastapi import APIRouter, Depends
 
 from app.api.deps.core import get_current_user
-from app.api.deps.domain import get_payment_method_service
-from app.domain.payment_methods.schemas import (
+from app.api.deps.finance import get_payment_method_service
+from app.modules.finance.payment_methods.schemas import (
     PaymentMethodCreate,
     PaymentMethodResponse,
 )
-from app.domain.payment_methods.service import PaymentMethodService
+from app.modules.finance.payment_methods.service import PaymentMethodService
 from app.modules.user.model import User
 
 router = APIRouter(prefix="/payment-methods", tags=["payment-methods"])

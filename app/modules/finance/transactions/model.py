@@ -17,7 +17,9 @@ class Transaction(SQLModel, table=True):
     user_id: uuid.UUID = Field(foreign_key="users.id", index=True, ondelete="CASCADE")
     account_id: uuid.UUID = Field(foreign_key="finance.accounts.id", index=True)
     tag_id: uuid.UUID = Field(foreign_key="finance.tags.id", index=True)
-    payment_method_id: uuid.UUID = Field(foreign_key="payment_methods.id", index=True)
+    payment_method_id: uuid.UUID = Field(
+        foreign_key="finance.payment_methods.id", index=True
+    )
     currency_id: uuid.UUID = Field(foreign_key="finance.currencies.id")
 
     value: Decimal = Field(DECIMAL(28, 6))

@@ -1,6 +1,6 @@
-from app.domain.payment_methods.model import PaymentMethod
-from app.domain.payment_methods.repo import PaymentMethodRepo
-from app.domain.payment_methods.schemas import PaymentMethodCreate
+from app.modules.finance.payment_methods.model import PaymentMethod
+from app.modules.finance.payment_methods.repo import PaymentMethodRepo
+from app.modules.finance.payment_methods.schemas import PaymentMethodCreate
 from app.modules.user.model import User
 
 
