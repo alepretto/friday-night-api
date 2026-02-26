@@ -45,7 +45,7 @@ async def test_transaction_tag_create_subcategory(
     assert response2.status_code == 409
 
     response_get = await client.get(
-        f"/apip/v1/finance/subcategories/{response.json()['id']}"
+        f"/api/v1/finance/subcategories/{response.json()['id']}"
     )
     assert response_get.status_code == 200
 
