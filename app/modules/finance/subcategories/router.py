@@ -32,7 +32,7 @@ async def get_by_id(
     return await service.get_by_id(subcategory_id)
 
 
-@router.get("/{category_id}", response_model=Page[SubcategoryBase])
+@router.get("/list/{category_id}", response_model=Page[SubcategoryBase])
 async def list_by_category(
     category_id: uuid.UUID,
     params: Annotated[Params, Depends()],

@@ -39,7 +39,11 @@ def get_subcategory_service(db: Annotated[AsyncSession, Depends(get_db)]):
 
 def get_tag_service(db: Annotated[AsyncSession, Depends(get_db)]):
     repo = TagRepo(db)
-    return TagService(repo)
+
+    category_service = get_category_service(db)
+    subcategory_service = get_subcategory_service(db)
+
+    return TagService(repo, category_service, subcategory_service)
 
 
 def get_account_service(db: Annotated[AsyncSession, Depends(get_db)]):

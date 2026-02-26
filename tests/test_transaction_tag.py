@@ -30,11 +30,11 @@ async def test_transaction_tag_create_subcategory(
 
     client, user = cliente_autenticado
 
-    category = await category_factory()
-
+    category = await category_factory(user_id=user.id)
+    category_id = str(category.id)
     payload = {
         "user_id": str(user.id),
-        "category_id": str(category.id),
+        "category_id": category_id,
         "label": "Cafezinho",
     }
 
@@ -49,6 +49,19 @@ async def test_transaction_tag_create_subcategory(
     )
     assert response_get.status_code == 200
 
+    payload2 = {
+        "user_id": str(user.id),
+        "category_id": category_id,
+        "label": "Mercadinho",
+    }
+
+    response = await client.post("/api/v1/finance/subcategories", json=payload2)
+    assert response.status_code == 201
+
+    response = await client.get(f"/api/v1/finance/subcategories/list/{category_id}")
+    assert response.status_code == 200
+    assert response.json()["total"] == 2
+
 
 @pytest.mark.asyncio
 async def test_transaction_tag_create(
@@ -56,8 +69,8 @@ async def test_transaction_tag_create(
 ):
     client, user = cliente_autenticado
 
-    category = await category_factory()
-    subcategory = await subcategory_factory()
+    category = await category_factory(user_id=user.id)
+    subcategory = await subcategory_factory(category_id=category.id)
 
     payload = {
         "user_id": str(user.id),
@@ -74,3 +87,40 @@ async def test_transaction_tag_create(
 
     response_get = await client.get(f"/api/v1/finance/tags/{response.json()['id']}")
     assert response_get.status_code == 200
+
+
+@pytest.mark.asyncio
+async def test_create_multiple_tags(
+    cliente_autenticado, category_factory, subcategory_factory
+):
+
+    client, user = cliente_autenticado
+
+    category = await category_factory(user_id=user.id)
+
+    subcat1 = await subcategory_factory(user_id=user.id, category_id=category.id)
+    subcat2 = await subcategory_factory(user_id=user.id, category_id=category.id)
+
+    payload = {
+        "user_id": str(user.id),
+        "category_id": str(category.id),
+        "subcategory_id": str(subcat1.id),
+        "active": True,
+    }
+    response1 = await client.post("/api/v1/finance/tags", json=payload)
+    assert response1.status_code == 201
+
+    payload2 = {
+        "user_id": str(user.id),
+        "category_id": str(category.id),
+        "subcategory_id": str(subcat2.id),
+        "active": False,
+    }
+
+    response2 = await client.post("/api/v1/finance/tags", json=payload2)
+    assert response2.status_code == 201
+
+    response_list = await client.get("/api/v1/finance/tags?active=true")
+
+    assert response_list.status_code == 200
+    assert response_list.json()["total"] == 1

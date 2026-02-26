@@ -2,6 +2,9 @@ import uuid
 
 from fastapi_pagination import Params
 
+from app.modules.finance.categories.service import CategoryService
+from app.modules.finance.subcategories.service import SubcategoryService
+from app.modules.finance.tags.exceptions import TagIntegrityError
 from app.modules.user.model import User
 from app.modules.finance.tags.model import Tag
 from app.modules.finance.tags.repo import TagRepo
@@ -9,10 +12,24 @@ from app.modules.finance.tags.schemas import TagCreate
 
 
 class TagService:
-    def __init__(self, repo: TagRepo) -> None:
+    def __init__(
+        self,
+        repo: TagRepo,
+        category_service: CategoryService,
+        subcategory_service: SubcategoryService,
+    ) -> None:
         self.repo = repo
 
+        self.category_service = category_service
+        self.subcategory_service = subcategory_service
+
     async def create_update(self, payload: TagCreate, user: User):
+
+        category = await self.category_service.get_by_id(payload.category_id, user)
+        subcategory = await self.subcategory_service.get_by_id(payload.subcategory_id)
+
+        if category.id != subcategory.category_id:
+            raise TagIntegrityError()
 
         model = Tag.model_validate(payload, update={"user_id": user.id})
         return await self.repo.create_update(model)
@@ -28,4 +45,4 @@ class TagService:
     async def list_by_user(
         self, user: User, active: bool | None = None, params: Params | None = None
     ):
-        return await self.repo.list_by_user(user.id, params=params)
+        return await self.repo.list_by_user(user.id, active, params=params)

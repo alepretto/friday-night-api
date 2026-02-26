@@ -3,7 +3,7 @@ from typing import Annotated
 import uuid
 
 from fastapi import APIRouter, Depends
-from fastapi_pagination import Params
+from fastapi_pagination import Page, Params
 
 from app.api.deps.core import get_current_user
 from app.api.deps.finance import get_tag_service
@@ -34,7 +34,7 @@ async def get_by_id(
     return await service.get_by_id(tag_id, user)
 
 
-@router.get("", response_model=TagBase)
+@router.get("", response_model=Page[TagBase])
 async def list_by_user(
     active: Annotated[bool, False],
     params: Annotated[Params, Depends()],
