@@ -9,7 +9,7 @@ from app.domain.holdings.router import router as holding_router
 from app.domain.payment_methods.router import router as payment_methods_router
 from app.domain.transactions.router import router as transaction_router
 from app.domain.user.router import router as user_router
-from app.use_cases.auth.router import router as auth_router
+from app.modules.auth.router import router as auth_router
 
 from .finance import finance_router
 
