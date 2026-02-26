@@ -1,7 +1,9 @@
 from http import HTTPStatus
 from typing import Annotated
+import uuid
 
 from fastapi import APIRouter, Depends
+from fastapi_pagination import Params
 
 from app.api.deps.core import get_current_user
 from app.api.deps.finance import get_tag_service
@@ -21,3 +23,22 @@ async def create_tag(
 ):
 
     return await service.create_update(payload, user)
+
+
+@router.get("/{tag_id}", response_model=TagBase)
+async def get_by_id(
+    tag_id: uuid.UUID,
+    service: Annotated[TagService, Depends(get_tag_service)],
+    user: Annotated[User, Depends(get_current_user)],
+):
+    return await service.get_by_id(tag_id, user)
+
+
+@router.get("", response_model=TagBase)
+async def list_by_user(
+    active: Annotated[bool, False],
+    params: Annotated[Params, Depends()],
+    service: Annotated[TagService, Depends(get_tag_service)],
+    user: Annotated[User, Depends(get_current_user)],
+):
+    return await service.list_by_user(user, active, params)

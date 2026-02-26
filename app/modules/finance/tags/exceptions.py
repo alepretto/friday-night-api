@@ -8,3 +8,10 @@ class TagAlreadyExists(FridayNightException):
         self, message="Tag Already Exists", status_code: int = HTTPStatus.CONFLICT
     ) -> None:
         super().__init__(message, status_code)
+
+
+class TagNotFound(FridayNightException):
+    def __init__(
+        self, message: str = "Tag Not Found!", status_code: int = HTTPStatus.BAD_REQUEST
+    ) -> None:
+        super().__init__(message, status_code)
