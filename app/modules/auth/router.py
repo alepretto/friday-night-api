@@ -1,3 +1,5 @@
+from typing import Annotated
+
 from fastapi import APIRouter, Depends
 
 from app.api.deps.core import get_auth_service
@@ -10,7 +12,7 @@ router = APIRouter(prefix="/auth")
 
 @router.post("/signup")
 async def signup(
-    user_data: UserSignUp, service: AuthService = Depends(get_auth_service)
+    user_data: UserSignUp, service: Annotated[AuthService, Depends(get_auth_service)]
 ):
 
     user = await service.register_new_user(user_data)
@@ -23,7 +25,7 @@ async def signup(
 
 @router.post("/login")
 async def signin(
-    login_data: UserSignIn, service: AuthService = Depends(get_auth_service)
+    login_data: UserSignIn, service: Annotated[AuthService, Depends(get_auth_service)]
 ):
 
     response = await service.login_user(login_data)

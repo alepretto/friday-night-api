@@ -1,4 +1,5 @@
 from http import HTTPStatus
+from typing import Annotated
 
 from fastapi import APIRouter, Depends
 
@@ -13,7 +14,7 @@ router = APIRouter(prefix="/users")
 
 
 @router.get("/me")
-async def get_me(user: User = Depends(get_current_user)):
+async def get_me(user: Annotated[User, Depends(get_current_user)]):
 
     return user
 
@@ -21,7 +22,7 @@ async def get_me(user: User = Depends(get_current_user)):
 @router.patch("/me")
 async def update_me(
     update_data: UserUpdate,
-    service: UserService = Depends(get_user_service),
+    service: Annotated[UserService, Depends(get_user_service)],
     user: User = Depends(get_current_user),
 ):
 
@@ -30,7 +31,7 @@ async def update_me(
 
 @router.delete("/me", status_code=HTTPStatus.NO_CONTENT)
 async def delete_me(
-    service: UserService = Depends(get_user_service),
+    service: Annotated[UserService, Depends(get_user_service)],
     user: User = Depends(get_current_user),
 ):
 

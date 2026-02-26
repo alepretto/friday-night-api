@@ -116,3 +116,11 @@ class HoldingFactory(SQLAlchemyFactory[modules.finance.Holding]):
     __model__ = modules.finance.Holding
 
     __set_relationships__ = False
+
+    @classmethod
+    def user_id(cls):
+        return UserFactory.build().id
+
+    @classmethod
+    def transaction_id(cls):
+        return TransactionFactory.build().id

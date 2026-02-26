@@ -1,3 +1,4 @@
+from typing import Annotated
 import uuid
 from http import HTTPStatus
 
@@ -18,8 +19,8 @@ router = APIRouter(prefix="/accounts", tags=["account"])
 @router.post("", response_model=AccountResponse, status_code=HTTPStatus.CREATED)
 async def create_account(
     payload: AccountCreate,
-    service: AccountService = Depends(get_account_service),
-    user: User = Depends(get_current_user),
+    service: Annotated[AccountService, Depends(get_account_service)],
+    user: Annotated[User, Depends(get_current_user)],
 ):
 
     return await service.create_update(payload, user)

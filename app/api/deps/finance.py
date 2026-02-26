@@ -42,17 +42,17 @@ def get_tag_service(db: Annotated[AsyncSession, Depends(get_db)]):
     return TagService(repo)
 
 
-def get_account_service(db: AsyncSession = Depends(get_db)):
+def get_account_service(db: Annotated[AsyncSession, Depends(get_db)]):
     repo = AccountRepo(db)
     return AccountService(repo)
 
 
-def get_currency_service(db: AsyncSession = Depends(get_db)):
+def get_currency_service(db: Annotated[AsyncSession, Depends(get_db)]):
     repo = CurrencyRepo(db)
     return CurrencyService(repo)
 
 
-def get_financial_institution_service(db: AsyncSession = Depends(get_db)):
+def get_financial_institution_service(db: Annotated[AsyncSession, Depends(get_db)]):
 
     repo = FinancialInstitutionsRepo(db)
     return FinancialInstitutionService(repo)
