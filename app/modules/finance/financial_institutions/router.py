@@ -1,13 +1,15 @@
 from fastapi import APIRouter, Depends
 from fastapi_pagination import Page
 
-from app.api.deps.domain import get_financial_institution_service
-from app.domain.financial_institutions.model import InstitutionType
-from app.domain.financial_institutions.schemas import (
+from app.api.deps.finance import get_financial_institution_service
+from app.modules.finance.financial_institutions.model import InstitutionType
+from app.modules.finance.financial_institutions.schemas import (
     FinancialInstitutionCreate,
     FinancialInstitutionResponse,
 )
-from app.domain.financial_institutions.service import FinancialInstitutionService
+from app.modules.finance.financial_institutions.service import (
+    FinancialInstitutionService,
+)
 
 router = APIRouter(prefix="/financial-institutions")
 

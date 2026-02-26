@@ -1,11 +1,13 @@
 from fastapi_pagination import Params
 
-from app.domain.financial_institutions.model import (
+from app.modules.finance.financial_institutions.model import (
     FinancialInstitution,
     InstitutionType,
 )
-from app.domain.financial_institutions.repo import FinancialInstitutionsRepo
-from app.domain.financial_institutions.schemas import FinancialInstitutionCreate
+from app.modules.finance.financial_institutions.repo import FinancialInstitutionsRepo
+from app.modules.finance.financial_institutions.schemas import (
+    FinancialInstitutionCreate,
+)
 
 
 class FinancialInstitutionService:

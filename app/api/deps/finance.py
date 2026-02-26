@@ -15,6 +15,10 @@ from app.modules.finance.accounts.repo import AccountRepo
 from app.modules.finance.accounts.service import AccountService
 from app.modules.finance.currencies.repo import CurrencyRepo
 from app.modules.finance.currencies.service import CurrencyService
+from app.modules.finance.financial_institutions.repo import FinancialInstitutionsRepo
+from app.modules.finance.financial_institutions.service import (
+    FinancialInstitutionService,
+)
 
 
 def get_category_service(db: Annotated[AsyncSession, Depends(get_db)]):
@@ -40,3 +44,9 @@ def get_account_service(db: AsyncSession = Depends(get_db)):
 def get_currency_service(db: AsyncSession = Depends(get_db)):
     repo = CurrencyRepo(db)
     return CurrencyService(repo)
+
+
+def get_financial_institution_service(db: AsyncSession = Depends(get_db)):
+
+    repo = FinancialInstitutionsRepo(db)
+    return FinancialInstitutionService(repo)

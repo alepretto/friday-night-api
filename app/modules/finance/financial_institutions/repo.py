@@ -4,7 +4,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import select
 
-from app.domain.financial_institutions.model import (
+from app.modules.finance.financial_institutions.model import (
     FinancialInstitution,
     InstitutionType,
 )

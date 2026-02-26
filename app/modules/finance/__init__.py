@@ -3,5 +3,13 @@ from .subcategories.model import Subcategory
 from .tags.model import Tag
 from .accounts.model import Account
 from .currencies.model import Currency
+from .financial_institutions.model import FinancialInstitution
 
-__all__ = ["Account", "Category", "Currency", "Subcategory", "Tag"]
+__all__ = [
+    "Account",
+    "Category",
+    "Currency",
+    "FinancialInstitution",
+    "Subcategory",
+    "Tag",
+]

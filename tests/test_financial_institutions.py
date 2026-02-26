@@ -15,7 +15,9 @@ async def test_create_financial_institution(db_session):
         base_url="http://test",
     ) as client:
         payload = {"name": "night-bank", "type": "bank"}
-        response = await client.post("/api/v1/financial-institutions", json=payload)
+        response = await client.post(
+            "/api/v1/finance/financial-institutions", json=payload
+        )
 
     assert response.status_code == 200
     assert response.json()["name"] == "night-bank"
@@ -35,11 +37,15 @@ async def test_create_financial_institution_duplicate(db_session):
         base_url="http://test",
     ) as client:
         payload = {"name": "night-bank", "type": "bank"}
-        response = await client.post("/api/v1/financial-institutions", json=payload)
+        response = await client.post(
+            "/api/v1/finance/financial-institutions", json=payload
+        )
 
         assert response.status_code == 200
 
-        response_2 = await client.post("/api/v1/financial-institutions", json=payload)
+        response_2 = await client.post(
+            "/api/v1/finance/financial-institutions", json=payload
+        )
 
         assert response_2.status_code == 400
         assert (
@@ -60,13 +66,17 @@ async def test_list_financial_institution(db_session):
     ) as client:
         payload = {"name": "night-bank", "type": "bank"}
 
-        response_1 = await client.post("/api/v1/financial-institutions", json=payload)
+        response_1 = await client.post(
+            "/api/v1/finance/financial-institutions", json=payload
+        )
         assert response_1.status_code == 200
 
-        response_2 = await client.post("/api/v1/financial-institutions", json=payload)
+        response_2 = await client.post(
+            "/api/v1/finance/financial-institutions", json=payload
+        )
         assert response_2.status_code == 400
 
-        response = await client.get("/api/v1/financial-institutions")
+        response = await client.get("/api/v1/finance/financial-institutions")
         assert response.status_code == 200
 
     app.dependency_overrides.clear()

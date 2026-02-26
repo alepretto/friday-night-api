@@ -10,8 +10,10 @@ class UserFactory(SQLAlchemyFactory[modules.User]):
     __set_relationships__ = False
 
 
-class FinancialInstitutionFactory(SQLAlchemyFactory[domain.FinancialInstitution]):
-    __model__ = domain.FinancialInstitution
+class FinancialInstitutionFactory(
+    SQLAlchemyFactory[modules.finance.FinancialInstitution]
+):
+    __model__ = modules.finance.FinancialInstitution
 
     __set_relationships__ = False
 

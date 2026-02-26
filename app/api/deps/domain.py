@@ -6,8 +6,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.api.deps.core import get_db
 
 
-from app.domain.financial_institutions.repo import FinancialInstitutionsRepo
-from app.domain.financial_institutions.service import FinancialInstitutionService
 from app.domain.holdings.repo import HoldingRepo
 from app.domain.holdings.service import HoldingService
 from app.domain.payment_methods.repo import PaymentMethodRepo
@@ -22,12 +20,6 @@ def get_user_service(db: AsyncSession = Depends(get_db)):
 
     repo = UserRepo(db)
     return UserService(repo)
-
-
-def get_financial_institution_service(db: AsyncSession = Depends(get_db)):
-
-    repo = FinancialInstitutionsRepo(db)
-    return FinancialInstitutionService(repo)
 
 
 def get_payment_method_service(db: Annotated[AsyncSession, Depends(get_db)]):
