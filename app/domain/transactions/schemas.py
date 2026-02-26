@@ -11,7 +11,7 @@ from app.core.utils import to_local
 
 class TransactionCreate(SQLModel):
     account_id: uuid.UUID
-    transaction_tag_id: uuid.UUID
+    tag_id: uuid.UUID
     payment_method_id: uuid.UUID
     currency_id: uuid.UUID
 
