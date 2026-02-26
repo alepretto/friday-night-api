@@ -6,7 +6,7 @@ from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 from sqlmodel import SQLModel
 
-import app.domain  # noqa: F401
+import app.modules  # noqa: F401
 from alembic import context
 from app.core.config import settings
 
@@ -59,7 +59,7 @@ def run_migrations_offline() -> None:
 def do_run_migrations(connection: Connection) -> None:
 
     connection.execute(text("CREATE SCHEMA IF NOT EXISTS finance"))
-    
+
     context.configure(
         connection=connection, target_metadata=target_metadata, compare_type=True
     )

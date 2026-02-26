@@ -6,7 +6,7 @@ from pydantic import field_serializer
 from sqlmodel import SQLModel
 
 from app.core.utils import to_local
-from app.domain.holdings.model import AssetType
+from app.modules.finance.holdings.model import AssetType
 
 
 class HoldingCreate(SQLModel):

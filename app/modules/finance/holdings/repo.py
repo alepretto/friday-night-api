@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.domain.holdings.model import Holding
+from app.modules.finance.holdings.model import Holding
 
 
 class HoldingRepo:

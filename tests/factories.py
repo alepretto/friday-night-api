@@ -1,7 +1,7 @@
 from polyfactory.factories.sqlalchemy_factory import SQLAlchemyFactory
 
-from app import domain
-from app import modules
+
+from app import modules  # noqa: F401
 
 
 class UserFactory(SQLAlchemyFactory[modules.User]):
@@ -112,7 +112,7 @@ class TransactionFactory(SQLAlchemyFactory[modules.finance.Transaction]):
         return CurrencyFactory.build().id
 
 
-class HoldingFactory(SQLAlchemyFactory[domain.Holding]):
-    __model__ = domain.Holding
+class HoldingFactory(SQLAlchemyFactory[modules.finance.Holding]):
+    __model__ = modules.finance.Holding
 
     __set_relationships__ = False

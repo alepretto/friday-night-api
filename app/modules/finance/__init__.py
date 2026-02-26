@@ -6,6 +6,7 @@ from .currencies.model import Currency
 from .financial_institutions.model import FinancialInstitution
 from .transactions.model import Transaction
 from .payment_methods.model import PaymentMethod
+from .holdings.model import Holding
 
 
 __all__ = [
@@ -17,4 +18,5 @@ __all__ = [
     "Tag",
     "Transaction",
     "PaymentMethod",
+    "Holding",
 ]

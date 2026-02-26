@@ -4,9 +4,9 @@ from typing import Annotated
 from fastapi import APIRouter, Depends
 
 from app.api.deps.core import get_current_user
-from app.api.deps.domain import get_holding_service
-from app.domain.holdings.schemas import HoldingCreate, HoldingResponse
-from app.domain.holdings.service import HoldingService
+from app.api.deps.finance import get_holding_service
+from app.modules.finance.holdings.schemas import HoldingCreate, HoldingResponse
+from app.modules.finance.holdings.service import HoldingService
 from app.modules.user.model import User
 
 router = APIRouter(prefix="/holdings", tags=["holdings"])

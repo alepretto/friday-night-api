@@ -1,6 +1,6 @@
-from app.domain.holdings.model import Holding
-from app.domain.holdings.repo import HoldingRepo
-from app.domain.holdings.schemas import HoldingCreate
+from app.modules.finance.holdings.model import Holding
+from app.modules.finance.holdings.repo import HoldingRepo
+from app.modules.finance.holdings.schemas import HoldingCreate
 from app.modules.user.model import User
 
 

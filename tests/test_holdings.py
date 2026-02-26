@@ -21,6 +21,6 @@ async def test_holding_create(
         "price": 96555.09,
     }
 
-    response = await client.post("/api/v1/holdings", json=payload)
+    response = await client.post("/api/v1/finance/holdings", json=payload)
 
     assert response.status_code == 201
