@@ -3,7 +3,7 @@ from datetime import datetime
 
 from sqlmodel import SQLModel
 
-from app.domain.currencies.model import CurrencyType
+from app.modules.finance.currencies.model import CurrencyType
 
 
 class CurrencyCreate(SQLModel):

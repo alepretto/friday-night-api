@@ -1,7 +1,7 @@
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.domain.currencies.exceptions import CurrencyAlreadyExists
+from app.modules.finance.currencies.exceptions import CurrencyAlreadyExists
 
 from .model import Currency
 

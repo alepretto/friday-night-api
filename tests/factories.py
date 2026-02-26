@@ -78,8 +78,8 @@ class TagFactory(SQLAlchemyFactory[modules.finance.Tag]):
         return SubcategoryFactory.build().id
 
 
-class CurrencyFactory(SQLAlchemyFactory[domain.Currency]):
-    __model__ = domain.Currency
+class CurrencyFactory(SQLAlchemyFactory[modules.finance.Currency]):
+    __model__ = modules.finance.Currency
 
     __set_relationships__ = False
 

@@ -18,6 +18,7 @@ class Currency(SQLModel, table=True):
 
     __table_args__ = (
         Index("unique_currency_label_symbol", "label", "symbol", unique=True),
+        {"schema": "finance"},
     )
 
     id: uuid.UUID = Field(

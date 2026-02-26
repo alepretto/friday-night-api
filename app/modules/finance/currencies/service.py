@@ -1,5 +1,5 @@
-from app.domain.currencies.model import Currency
-from app.domain.currencies.repo import CurrencyRepo
+from app.modules.finance.currencies.model import Currency
+from app.modules.finance.currencies.repo import CurrencyRepo
 
 from .schema import CurrencyCreate
 

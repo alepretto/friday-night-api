@@ -8,6 +8,6 @@ async def test_create_currency(cliente_autenticado):
 
     client, _ = cliente_autenticado
 
-    response = await client.post("/api/v1/currencies", json=payload)
+    response = await client.post("/api/v1/finance/currencies", json=payload)
 
     assert response.status_code == 201

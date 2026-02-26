@@ -13,6 +13,8 @@ from app.modules.finance.tags.repo import TagRepo
 from app.modules.finance.tags.service import TagService
 from app.modules.finance.accounts.repo import AccountRepo
 from app.modules.finance.accounts.service import AccountService
+from app.modules.finance.currencies.repo import CurrencyRepo
+from app.modules.finance.currencies.service import CurrencyService
 
 
 def get_category_service(db: Annotated[AsyncSession, Depends(get_db)]):
@@ -33,3 +35,8 @@ def get_tag_service(db: Annotated[AsyncSession, Depends(get_db)]):
 def get_account_service(db: AsyncSession = Depends(get_db)):
     repo = AccountRepo(db)
     return AccountService(repo)
+
+
+def get_currency_service(db: AsyncSession = Depends(get_db)):
+    repo = CurrencyRepo(db)
+    return CurrencyService(repo)
