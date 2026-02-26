@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.domain.transactions.model import Transaction
+from app.modules.finance.transactions.model import Transaction
 
 
 class TransactionRepo:

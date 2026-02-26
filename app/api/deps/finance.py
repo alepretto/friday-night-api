@@ -19,6 +19,8 @@ from app.modules.finance.financial_institutions.repo import FinancialInstitution
 from app.modules.finance.financial_institutions.service import (
     FinancialInstitutionService,
 )
+from app.modules.finance.transactions.repo import TransactionRepo
+from app.modules.finance.transactions.service import TransactionService
 
 
 def get_category_service(db: Annotated[AsyncSession, Depends(get_db)]):
@@ -50,3 +52,8 @@ def get_financial_institution_service(db: AsyncSession = Depends(get_db)):
 
     repo = FinancialInstitutionsRepo(db)
     return FinancialInstitutionService(repo)
+
+
+def get_transaction_service(db: Annotated[AsyncSession, Depends(get_db)]):
+    repo = TransactionRepo(db)
+    return TransactionService(repo)

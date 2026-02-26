@@ -4,6 +4,8 @@ from .tags.model import Tag
 from .accounts.model import Account
 from .currencies.model import Currency
 from .financial_institutions.model import FinancialInstitution
+from .transactions.model import Transaction
+
 
 __all__ = [
     "Account",
@@ -12,4 +14,5 @@ __all__ = [
     "FinancialInstitution",
     "Subcategory",
     "Tag",
+    "Transaction",
 ]

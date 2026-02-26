@@ -54,7 +54,7 @@ class Account(SQLModel, table=True):
         foreign_key="users.id", sa_column_kwargs={"unique": False}, ondelete="CASCADE"
     )
     financial_institution_id: UUID = Field(
-        foreign_key="financial_institutions.id",
+        foreign_key="finance.financial_institutions.id",
         sa_column_kwargs={"unique": False},
         index=True,
     )

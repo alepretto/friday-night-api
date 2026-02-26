@@ -1,6 +1,6 @@
-from app.domain.transactions.model import Transaction
-from app.domain.transactions.repo import TransactionRepo
-from app.domain.transactions.schemas import TransactionCreate
+from app.modules.finance.transactions.model import Transaction
+from app.modules.finance.transactions.repo import TransactionRepo
+from app.modules.finance.transactions.schemas import TransactionCreate
 from app.modules.user.model import User
 
 

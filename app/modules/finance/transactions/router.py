@@ -4,9 +4,12 @@ from typing import Annotated
 from fastapi import APIRouter, Depends
 
 from app.api.deps.core import get_current_user
-from app.api.deps.domain import get_transaction_service
-from app.domain.transactions.schemas import TransactionCreate, TransactionResponse
-from app.domain.transactions.service import TransactionService
+from app.api.deps.finance import get_transaction_service
+from app.modules.finance.transactions.schemas import (
+    TransactionCreate,
+    TransactionResponse,
+)
+from app.modules.finance.transactions.service import TransactionService
 from app.modules.user.model import User
 
 router = APIRouter(prefix="/transactions")

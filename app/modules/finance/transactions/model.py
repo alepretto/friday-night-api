@@ -10,6 +10,7 @@ from uuid6 import uuid7
 
 class Transaction(SQLModel, table=True):
     __tablename__ = "transactions"  # type: ignore
+    __table_args__ = {"schema": "finance"}
 
     id: uuid.UUID = Field(primary_key=True, index=True, default_factory=uuid7)
 

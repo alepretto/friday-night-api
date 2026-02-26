@@ -21,7 +21,7 @@ class Holding(SQLModel, table=True):
 
     id: uuid.UUID = Field(primary_key=True, index=True, default_factory=uuid7)
 
-    transaction_id: uuid.UUID = Field(foreign_key="transactions.id", index=True)
+    transaction_id: uuid.UUID = Field(foreign_key="finance.transactions.id", index=True)
     user_id: uuid.UUID = Field(foreign_key="users.id", index=True, ondelete="CASCADE")
 
     symbol: str = Field(index=True)

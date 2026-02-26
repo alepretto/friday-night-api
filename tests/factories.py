@@ -86,8 +86,8 @@ class CurrencyFactory(SQLAlchemyFactory[modules.finance.Currency]):
     __set_relationships__ = False
 
 
-class TransactionFactory(SQLAlchemyFactory[domain.Transaction]):
-    __model__ = domain.Transaction
+class TransactionFactory(SQLAlchemyFactory[modules.finance.Transaction]):
+    __model__ = modules.finance.Transaction
 
     __set_relationships__ = False
 

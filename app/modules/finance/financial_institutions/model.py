@@ -22,6 +22,7 @@ class FinancialInstitution(SQLModel, table=True):
 
     __table_args__ = (
         UniqueConstraint("name", "type", name="uq_financial_institutions_name_type"),
+        {"schema": "finance"},
     )
     id: uuid.UUID = Field(
         primary_key=True, index=True, nullable=False, default_factory=uuid7
