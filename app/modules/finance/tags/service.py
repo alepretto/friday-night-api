@@ -4,7 +4,11 @@ from fastapi_pagination import Params
 
 from app.modules.finance.categories.service import CategoryService
 from app.modules.finance.subcategories.service import SubcategoryService
-from app.modules.finance.tags.exceptions import TagIntegrityError
+from app.modules.finance.tags.exceptions import (
+    TagAlreadyActive,
+    TagAlreadyInactive,
+    TagIntegrityError,
+)
 from app.modules.user.model import User
 from app.modules.finance.tags.model import Tag
 from app.modules.finance.tags.repo import TagRepo
@@ -46,3 +50,14 @@ class TagService:
         self, user: User, active: bool | None = None, params: Params | None = None
     ):
         return await self.repo.list_by_user(user.id, active, params=params)
+
+    async def toggle_tag_state(self, active: bool, tag_id: uuid.UUID, user: User):
+
+        tag = await self.get_by_id(tag_id, user)
+
+        if tag.active == active:
+            raise TagAlreadyActive() if active else TagAlreadyInactive()
+
+        tag.active = active
+
+        return await self.repo.create_update(tag)

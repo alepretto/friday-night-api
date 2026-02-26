@@ -124,3 +124,39 @@ async def test_create_multiple_tags(
 
     assert response_list.status_code == 200
     assert response_list.json()["total"] == 1
+
+
+@pytest.mark.asyncio
+async def test_transaction_tag_toggle(
+    cliente_autenticado, category_factory, subcategory_factory
+):
+    client, user = cliente_autenticado
+
+    category = await category_factory(user_id=user.id)
+    subcategory = await subcategory_factory(category_id=category.id)
+
+    payload = {
+        "user_id": str(user.id),
+        "category_id": str(category.id),
+        "subcategory_id": str(subcategory.id),
+        "active": True,
+    }
+
+    response = await client.post("/api/v1/finance/tags", json=payload)
+    assert response.status_code == 201
+
+    tag_id = response.json()["id"]
+
+    r_deactive = await client.patch(f"/api/v1/finance/tags/{tag_id}/deactivate")
+    assert r_deactive.status_code == 200
+
+    response = await client.get(f"/api/v1/finance/tags/{tag_id}")
+    assert response.status_code == 200
+    assert not response.json()["active"]
+
+    r_active = await client.patch(f"/api/v1/finance/tags/{tag_id}/activate")
+    assert r_active.status_code == 200
+
+    response = await client.get(f"/api/v1/finance/tags/{tag_id}")
+    assert response.status_code == 200
+    assert response.json()["active"]

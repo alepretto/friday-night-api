@@ -25,6 +25,24 @@ async def create_tag(
     return await service.create_update(payload, user)
 
 
+@router.patch("/{tag_id}/deactivate", response_model=TagBase)
+async def deactivate_tag(
+    tag_id: uuid.UUID,
+    service: Annotated[TagService, Depends(get_tag_service)],
+    user: Annotated[User, Depends(get_current_user)],
+):
+    return await service.toggle_tag_state(False, tag_id, user)
+
+
+@router.patch("/{tag_id}/activate", response_model=TagBase)
+async def activate_tag(
+    tag_id: uuid.UUID,
+    service: Annotated[TagService, Depends(get_tag_service)],
+    user: Annotated[User, Depends(get_current_user)],
+):
+    return await service.toggle_tag_state(True, tag_id, user)
+
+
 @router.get("/{tag_id}", response_model=TagBase)
 async def get_by_id(
     tag_id: uuid.UUID,

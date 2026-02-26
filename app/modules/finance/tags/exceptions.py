@@ -24,3 +24,21 @@ class TagIntegrityError(FridayNightException):
         status_code: int = HTTPStatus.BAD_REQUEST,
     ) -> None:
         super().__init__(message, status_code)
+
+
+class TagAlreadyInactive(FridayNightException):
+    def __init__(
+        self,
+        message: str = "Tag Already Inactive",
+        status_code: int = HTTPStatus.BAD_REQUEST,
+    ) -> None:
+        super().__init__(message, status_code)
+
+
+class TagAlreadyActive(FridayNightException):
+    def __init__(
+        self,
+        message: str = "Tag Already Active",
+        status_code: int = HTTPStatus.BAD_REQUEST,
+    ) -> None:
+        super().__init__(message, status_code)
