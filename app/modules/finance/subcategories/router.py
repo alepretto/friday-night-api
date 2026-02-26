@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends
 
 from app.api.deps.core import get_current_user
 from app.api.deps.finance import get_subcategory_service
-from app.domain.user.model import User
+from app.modules.user.model import User
 from app.modules.finance.subcategories.schemas import SubcategoryBase, SubcategoryCreate
 from app.modules.finance.subcategories.service import SubcategoryService
 

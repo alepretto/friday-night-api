@@ -5,7 +5,7 @@ from fastapi_pagination import Params
 from app.domain.accounts.model import Account, AccountStatus, AccountType
 from app.domain.accounts.repo import AccountRepo
 from app.domain.accounts.schemas import AccountCreate
-from app.domain.user.model import User
+from app.modules.user.model import User
 
 
 class AccountService:

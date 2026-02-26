@@ -10,7 +10,7 @@ from app.domain.payment_methods.schemas import (
     PaymentMethodResponse,
 )
 from app.domain.payment_methods.service import PaymentMethodService
-from app.domain.user.model import User
+from app.modules.user.model import User
 
 router = APIRouter(prefix="/payment-methods", tags=["payment-methods"])
 

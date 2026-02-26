@@ -4,8 +4,8 @@ from fastapi import APIRouter, Depends
 
 from app.api.deps.core import get_current_user
 from app.api.deps.domain import get_user_service
-from app.domain.user.schemas import UserUpdate
-from app.domain.user.service import UserService
+from app.modules.user.schemas import UserUpdate
+from app.modules.user.service import UserService
 
 from .model import User
 

@@ -4,8 +4,8 @@ from app import domain
 from app import modules
 
 
-class UserFactory(SQLAlchemyFactory[domain.User]):
-    __model__ = domain.User
+class UserFactory(SQLAlchemyFactory[modules.User]):
+    __model__ = modules.User
 
     __set_relationships__ = False
 

@@ -1,6 +1,6 @@
-from app.domain.user.model import User
-from app.domain.user.repo import UserRepo
-from app.domain.user.schemas import UserUpdate
+from app.modules.user.model import User
+from app.modules.user.repo import UserRepo
+from app.modules.user.schemas import UserUpdate
 
 
 class UserService:

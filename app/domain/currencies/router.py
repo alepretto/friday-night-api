@@ -6,7 +6,7 @@ from fastapi import APIRouter, Depends
 from app.api.deps.core import get_current_user
 from app.api.deps.domain import get_currency_service
 from app.domain.currencies.service import CurrencyService
-from app.domain.user.model import User
+from app.modules.user.model import User
 
 from .schema import CurrencyCreate, CurrencyResponse
 
@@ -21,4 +21,6 @@ async def create_currency(
 ):
 
     return await service.create_update(payload)
+
+
 #

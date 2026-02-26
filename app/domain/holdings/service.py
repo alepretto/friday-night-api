@@ -1,7 +1,7 @@
 from app.domain.holdings.model import Holding
 from app.domain.holdings.repo import HoldingRepo
 from app.domain.holdings.schemas import HoldingCreate
-from app.domain.user.model import User
+from app.modules.user.model import User
 
 
 class HoldingService:

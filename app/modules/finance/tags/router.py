@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends
 
 from app.api.deps.core import get_current_user
 from app.api.deps.finance import get_tag_service
-from app.domain.user.model import User
+from app.modules.user.model import User
 from app.modules.finance.tags.schemas import TagBase, TagCreate
 from app.modules.finance.tags.service import TagService
 

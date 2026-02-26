@@ -4,7 +4,6 @@ from .financial_institutions.model import FinancialInstitution
 from .holdings.model import Holding
 from .payment_methods.model import PaymentMethod
 from .transactions.model import Transaction
-from .user.model import User
 
 
 __all__ = [
@@ -14,5 +13,4 @@ __all__ = [
     "Holding",
     "PaymentMethod",
     "Transaction",
-    "User",
 ]

@@ -16,8 +16,8 @@ from app.domain.payment_methods.repo import PaymentMethodRepo
 from app.domain.payment_methods.service import PaymentMethodService
 from app.domain.transactions.repo import TransactionRepo
 from app.domain.transactions.service import TransactionService
-from app.domain.user.repo import UserRepo
-from app.domain.user.service import UserService
+from app.modules.user.repo import UserRepo
+from app.modules.user.service import UserService
 
 
 def get_user_service(db: AsyncSession = Depends(get_db)):

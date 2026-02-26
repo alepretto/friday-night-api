@@ -1,7 +1,7 @@
 from app.domain.payment_methods.model import PaymentMethod
 from app.domain.payment_methods.repo import PaymentMethodRepo
 from app.domain.payment_methods.schemas import PaymentMethodCreate
-from app.domain.user.model import User
+from app.modules.user.model import User
 
 
 class PaymentMethodService:

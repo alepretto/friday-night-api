@@ -2,7 +2,7 @@ import uuid
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.domain.user.model import User
+from app.modules.user.model import User
 
 
 class UserRepo:

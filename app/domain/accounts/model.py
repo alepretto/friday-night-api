@@ -8,7 +8,7 @@ from sqlmodel import Field, Relationship, SQLModel
 from uuid6 import uuid7
 
 if TYPE_CHECKING:
-    from app.domain.user.model import User
+    from app.modules.user.model import User
 
 
 class AccountType(str, Enum):

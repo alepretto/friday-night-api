@@ -1,4 +1,4 @@
-from app.domain.user.model import User
+from app.modules.user.model import User
 from app.modules.finance.subcategories.model import Subcategory
 from app.modules.finance.subcategories.repo import SubcategoryRepo
 from app.modules.finance.subcategories.schemas import SubcategoryCreate
