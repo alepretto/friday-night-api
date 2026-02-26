@@ -7,8 +7,8 @@ from supabase._async.client import AsyncClient, create_client
 
 from app.core.config import settings
 from app.core.database import AsyncSessionLocal
-from app.domain.user.model import User
-from app.use_cases.auth.service import AuthService
+from app.modules.user.model import User
+from app.modules.auth.service import AuthService
 
 
 async def get_supabase_client():

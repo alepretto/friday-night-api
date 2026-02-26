@@ -1,23 +1,25 @@
 from polyfactory.factories.sqlalchemy_factory import SQLAlchemyFactory
 
-from app import domain
-from app import modules
+
+from app import modules  # noqa: F401
 
 
-class UserFactory(SQLAlchemyFactory[domain.User]):
-    __model__ = domain.User
-
-    __set_relationships__ = False
-
-
-class FinancialInstitutionFactory(SQLAlchemyFactory[domain.FinancialInstitution]):
-    __model__ = domain.FinancialInstitution
+class UserFactory(SQLAlchemyFactory[modules.User]):
+    __model__ = modules.User
 
     __set_relationships__ = False
 
 
-class AccountFactory(SQLAlchemyFactory[domain.Account]):
-    __model__ = domain.Account
+class FinancialInstitutionFactory(
+    SQLAlchemyFactory[modules.finance.FinancialInstitution]
+):
+    __model__ = modules.finance.FinancialInstitution
+
+    __set_relationships__ = False
+
+
+class AccountFactory(SQLAlchemyFactory[modules.finance.Account]):
+    __model__ = modules.finance.Account
 
     __set_relationships__ = False
 
@@ -30,8 +32,8 @@ class AccountFactory(SQLAlchemyFactory[domain.Account]):
         return FinancialInstitutionFactory.build().id
 
 
-class PaymentMethodFactory(SQLAlchemyFactory[domain.PaymentMethod]):
-    __model__ = domain.PaymentMethod
+class PaymentMethodFactory(SQLAlchemyFactory[modules.finance.PaymentMethod]):
+    __model__ = modules.finance.PaymentMethod
 
     __set_relationships__ = False
 
@@ -78,14 +80,14 @@ class TagFactory(SQLAlchemyFactory[modules.finance.Tag]):
         return SubcategoryFactory.build().id
 
 
-class CurrencyFactory(SQLAlchemyFactory[domain.Currency]):
-    __model__ = domain.Currency
+class CurrencyFactory(SQLAlchemyFactory[modules.finance.Currency]):
+    __model__ = modules.finance.Currency
 
     __set_relationships__ = False
 
 
-class TransactionFactory(SQLAlchemyFactory[domain.Transaction]):
-    __model__ = domain.Transaction
+class TransactionFactory(SQLAlchemyFactory[modules.finance.Transaction]):
+    __model__ = modules.finance.Transaction
 
     __set_relationships__ = False
 
@@ -110,7 +112,15 @@ class TransactionFactory(SQLAlchemyFactory[domain.Transaction]):
         return CurrencyFactory.build().id
 
 
-class HoldingFactory(SQLAlchemyFactory[domain.Holding]):
-    __model__ = domain.Holding
+class HoldingFactory(SQLAlchemyFactory[modules.finance.Holding]):
+    __model__ = modules.finance.Holding
 
     __set_relationships__ = False
+
+    @classmethod
+    def user_id(cls):
+        return UserFactory.build().id
+
+    @classmethod
+    def transaction_id(cls):
+        return TransactionFactory.build().id

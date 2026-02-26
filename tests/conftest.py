@@ -7,8 +7,7 @@ from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 from sqlmodel import SQLModel, text
 from testcontainers.postgres import PostgresContainer
 
-from app import domain
-from app import modules
+from app import modules  # noqa: F401
 from app.api.deps.core import get_db, get_supabase_client
 from app.main import app
 from tests.factories import (

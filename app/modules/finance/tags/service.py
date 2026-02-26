@@ -1,4 +1,4 @@
-from app.domain.user.model import User
+from app.modules.user.model import User
 from app.modules.finance.tags.model import Tag
 from app.modules.finance.tags.repo import TagRepo
 from app.modules.finance.tags.schemas import TagCreate
