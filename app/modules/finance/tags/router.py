@@ -54,9 +54,9 @@ async def get_by_id(
 
 @router.get("", response_model=Page[TagBase])
 async def list_by_user(
-    active: Annotated[bool, False],
     params: Annotated[Params, Depends()],
     service: Annotated[TagService, Depends(get_tag_service)],
     user: Annotated[User, Depends(get_current_user)],
+    active: bool = False,
 ):
     return await service.list_by_user(user, active, params)

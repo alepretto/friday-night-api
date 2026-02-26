@@ -8,6 +8,7 @@ from app.modules.finance.tags.exceptions import (
     TagAlreadyActive,
     TagAlreadyInactive,
     TagIntegrityError,
+    TagNotFound,
 )
 from app.modules.user.model import User
 from app.modules.finance.tags.model import Tag
@@ -42,7 +43,7 @@ class TagService:
 
         tag = await self.repo.get_by_id(tag_id, user.id)
         if not tag:
-            raise
+            raise TagNotFound()
 
         return tag
 
