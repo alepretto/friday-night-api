@@ -8,14 +8,14 @@ from fastapi_pagination import Page, Params
 from app.api.deps.core import get_current_user
 from app.api.deps.finance import get_tag_service
 from app.modules.user.model import User
-from app.modules.finance.tags.schemas import TagBase, TagCreate
+from app.modules.finance.tags.schemas import TagBase, TagCreate, TagResponse
 from app.modules.finance.tags.service import TagService
 
 
 router = APIRouter(prefix="/tags", tags=["tags"])
 
 
-@router.post("", status_code=HTTPStatus.CREATED, response_model=TagBase)
+@router.post("", status_code=HTTPStatus.CREATED, response_model=TagResponse)
 async def create_tag(
     payload: TagCreate,
     service: Annotated[TagService, Depends(get_tag_service)],
@@ -25,7 +25,7 @@ async def create_tag(
     return await service.create_update(payload, user)
 
 
-@router.patch("/{tag_id}/deactivate", response_model=TagBase)
+@router.patch("/{tag_id}/deactivate", response_model=TagResponse)
 async def deactivate_tag(
     tag_id: uuid.UUID,
     service: Annotated[TagService, Depends(get_tag_service)],
@@ -34,7 +34,7 @@ async def deactivate_tag(
     return await service.toggle_tag_state(False, tag_id, user)
 
 
-@router.patch("/{tag_id}/activate", response_model=TagBase)
+@router.patch("/{tag_id}/activate", response_model=TagResponse)
 async def activate_tag(
     tag_id: uuid.UUID,
     service: Annotated[TagService, Depends(get_tag_service)],
@@ -43,7 +43,7 @@ async def activate_tag(
     return await service.toggle_tag_state(True, tag_id, user)
 
 
-@router.get("/{tag_id}", response_model=TagBase)
+@router.get("/{tag_id}", response_model=TagResponse)
 async def get_by_id(
     tag_id: uuid.UUID,
     service: Annotated[TagService, Depends(get_tag_service)],
@@ -52,11 +52,11 @@ async def get_by_id(
     return await service.get_by_id(tag_id, user)
 
 
-@router.get("", response_model=Page[TagBase])
+@router.get("", response_model=Page[TagResponse])
 async def list_by_user(
     params: Annotated[Params, Depends()],
     service: Annotated[TagService, Depends(get_tag_service)],
     user: Annotated[User, Depends(get_current_user)],
-    active: bool = False,
+    active: bool | None = None,
 ):
     return await service.list_by_user(user, active, params)

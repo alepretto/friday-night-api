@@ -1,9 +1,11 @@
+import asyncio
 from unittest.mock import AsyncMock
 
 import pytest
 import pytest_asyncio
 from httpx import ASGITransport, AsyncClient
-from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.pool import NullPool
 from sqlmodel import SQLModel, text
 from testcontainers.postgres import PostgresContainer
 
@@ -26,27 +28,43 @@ from tests.factories import (
 
 @pytest.fixture(scope="session")
 def db_url():
-
     with PostgresContainer("postgres:15-alpine") as postgres:
         url = postgres.get_connection_url().replace("psycopg2", "asyncpg")
         yield url
 
 
+@pytest.fixture(scope="session")
+def db_engine(db_url):
+    engine = create_async_engine(db_url, poolclass=NullPool)
+
+    async def _setup():
+        async with engine.begin() as conn:
+            await conn.execute(text("CREATE SCHEMA IF NOT EXISTS finance"))
+            await conn.run_sync(SQLModel.metadata.create_all)
+
+    asyncio.run(_setup())
+
+    yield engine
+
+    async def _teardown():
+        async with engine.begin() as conn:
+            await conn.run_sync(SQLModel.metadata.drop_all)
+        await engine.dispose()
+
+    asyncio.run(_teardown())
+
+
 @pytest_asyncio.fixture(scope="function")
-async def db_session(db_url):
-    engine = create_async_engine(db_url)
-
-    async with engine.begin() as conn:
-        await conn.execute(text("CREATE SCHEMA IF NOT EXISTS finance"))
-        await conn.run_sync(SQLModel.metadata.create_all)
-
-    TestingSessionLocal = async_sessionmaker(bind=engine, expire_on_commit=False)
-
-    async with TestingSessionLocal() as session:
+async def db_session(db_engine):
+    async with AsyncSession(db_engine, expire_on_commit=False) as session:
         yield session
 
-    async with engine.begin() as conn:
-        await conn.run_sync(SQLModel.metadata.drop_all)
+    async with db_engine.begin() as conn:
+        tables = ", ".join(
+            f"{t.schema}.{t.name}" if t.schema else t.name
+            for t in SQLModel.metadata.sorted_tables
+        )
+        await conn.execute(text(f"TRUNCATE TABLE {tables} RESTART IDENTITY CASCADE"))
 
 
 @pytest_asyncio.fixture

@@ -1,0 +1,24 @@
+meta {
+  name: List Subcategories
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/v1/finance/subcategories/list/:category_id
+  body: none
+  auth: bearer
+}
+
+params:path {
+  category_id: 019ca5db-fde9-7ff1-ae31-ce12ae65882f
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

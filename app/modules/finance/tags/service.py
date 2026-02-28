@@ -50,7 +50,9 @@ class TagService:
     async def list_by_user(
         self, user: User, active: bool | None = None, params: Params | None = None
     ):
-        return await self.repo.list_by_user(user.id, active, params=params)
+        tags = await self.repo.list_by_user(user.id, active, params=params)
+        print(tags)
+        return tags
 
     async def toggle_tag_state(self, active: bool, tag_id: uuid.UUID, user: User):
 

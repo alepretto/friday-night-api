@@ -61,7 +61,13 @@ def do_run_migrations(connection: Connection) -> None:
     connection.execute(text("CREATE SCHEMA IF NOT EXISTS finance"))
 
     context.configure(
-        connection=connection, target_metadata=target_metadata, compare_type=True
+        connection=connection,
+        target_metadata=target_metadata,
+        compare_type=True,
+        include_schemas=True,
+        include_name=lambda name, type_, parent_names: (
+            name in (None, "finance") if type_ == "schema" else True
+        ),
     )
 
     with context.begin_transaction():
@@ -82,7 +88,7 @@ async def run_async_migrations() -> None:
         poolclass=pool.NullPool,
     )
 
-    async with connectable.connect() as connection:
+    async with connectable.begin() as connection:
         await connection.run_sync(do_run_migrations)
 
     await connectable.dispose()
