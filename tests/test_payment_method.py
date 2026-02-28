@@ -15,3 +15,13 @@ async def test_payment_method_create(cliente_autenticado):
 
     response2 = await client.post("/api/v1/finance/payment-methods", json=payload)
     assert response2.status_code == 409
+
+    method_id = response.json()["id"]
+
+    response_get = await client.get(f"/api/v1/finance/payment-methods/{method_id}")
+    assert response_get.status_code == 200
+
+    response_list = await client.get("/api/v1/finance/payment-methods")
+    assert response_list.status_code == 200
+
+    assert response_list.json()["total"] == 1
