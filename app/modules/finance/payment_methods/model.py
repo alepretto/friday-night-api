@@ -17,7 +17,7 @@ class PaymentMethod(SQLModel, table=True):
     user_id: uuid.UUID = Field(foreign_key="users.id", index=True, ondelete="CASCADE")
 
     label: str = Field(index=True)
-    is_active: Optional[bool] = Field(default=True)
+    active: Optional[bool] = Field(default=True)
 
     created_at: Optional[datetime] = Field(
         default=None,

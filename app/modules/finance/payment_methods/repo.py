@@ -45,6 +45,6 @@ class PaymentMethodRepo:
         query = select(PaymentMethod).where(PaymentMethod.user_id == user_id)
 
         if active is not None:
-            query.where(PaymentMethod.is_active == active)
+            query = query.where(PaymentMethod.active == active)
 
         return await apaginate(self.db, query, params=params)

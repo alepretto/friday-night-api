@@ -6,7 +6,7 @@ from sqlalchemy import Column, UniqueConstraint
 
 
 class Tag(SQLModel, table=True):
-    __tablename__ = "tags"
+    __tablename__ = "tags"  # type: ignore
     __table_args__ = (
         UniqueConstraint(
             "user_id", "category_id", "subcategory_id", name="uq_finance_tag"

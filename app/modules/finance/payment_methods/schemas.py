@@ -6,7 +6,7 @@ from sqlmodel import SQLModel
 
 class PaymentMethodCreate(SQLModel):
     label: str
-    is_active: bool = True
+    active: bool = True
 
 
 class PaymentMethodResponse(PaymentMethodCreate):

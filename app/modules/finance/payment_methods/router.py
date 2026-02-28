@@ -36,6 +36,26 @@ async def get_by_id(
     return await service.get_by_id(payment_method_id, user)
 
 
+@router.patch("/{payment_method_id}/deactivate", response_model=PaymentMethodResponse)
+async def deactivate_method(
+    payment_method_id: uuid.UUID,
+    service: Annotated[PaymentMethodService, Depends(get_payment_method_service)],
+    user: Annotated[User, Depends(get_current_user)],
+):
+
+    return await service.toggle_state(payment_method_id, False, user)
+
+
+@router.patch("/{payment_method_id}/activate", response_model=PaymentMethodResponse)
+async def activate_method(
+    payment_method_id: uuid.UUID,
+    service: Annotated[PaymentMethodService, Depends(get_payment_method_service)],
+    user: Annotated[User, Depends(get_current_user)],
+):
+
+    return await service.toggle_state(payment_method_id, True, user)
+
+
 @router.get("", response_model=Page[PaymentMethodResponse])
 async def list_by_user(
     service: Annotated[PaymentMethodService, Depends(get_payment_method_service)],
