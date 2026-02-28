@@ -8,6 +8,7 @@ from sqlmodel import select
 
 from app.modules.finance.categories.exceptions import CategoryAlreadyExistis
 from app.modules.finance.categories.model import Category
+from app.modules.finance.subcategories.model import Subcategory
 
 
 class CategoryRepo:
@@ -40,3 +41,27 @@ class CategoryRepo:
         query = select(Category).where(Category.user_id == user_id)
 
         return await apaginate(self.db, query, params=params)
+
+    async def list_with_subcategories(
+        self, user_id: uuid.UUID
+    ) -> list[tuple[Category, list[Subcategory]]]:
+
+        cats_result = await self.db.execute(
+            select(Category).where(Category.user_id == user_id)
+        )
+        categories = list(cats_result.scalars().all())
+
+        if not categories:
+            return []
+
+        cat_ids = [c.id for c in categories]
+        subs_result = await self.db.execute(
+            select(Subcategory).where(Subcategory.category_id.in_(cat_ids))
+        )
+        subcategories = subs_result.scalars().all()
+
+        subs_by_cat: dict[uuid.UUID, list[Subcategory]] = {}
+        for sub in subcategories:
+            subs_by_cat.setdefault(sub.category_id, []).append(sub)
+
+        return [(cat, subs_by_cat.get(cat.id, [])) for cat in categories]

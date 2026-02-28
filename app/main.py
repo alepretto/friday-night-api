@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi_pagination import add_pagination
 from supabase_auth.errors import AuthApiError
 
@@ -7,7 +8,16 @@ from app.api.router import main_router
 from app.core.config import settings
 from app.core.exception import FridayNightException
 
+
 app = FastAPI(title=settings.PROJECT_NAME, version="0.1.0")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.exception_handler(AuthApiError)

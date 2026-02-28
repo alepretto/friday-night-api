@@ -1,8 +1,13 @@
 from datetime import datetime
+from typing import Optional, TYPE_CHECKING
 from uuid6 import uuid7
 import uuid
-from sqlmodel import Field, SQLModel, TIMESTAMP, func
+from sqlmodel import Field, SQLModel, TIMESTAMP, func, Relationship
 from sqlalchemy import Column, UniqueConstraint
+
+if TYPE_CHECKING:
+    from app.modules.finance.categories.model import Category
+    from app.modules.finance.subcategories.model import Subcategory
 
 
 class Tag(SQLModel, table=True):
@@ -36,3 +41,6 @@ class Tag(SQLModel, table=True):
             TIMESTAMP(timezone=True), server_default=func.now(), onupdate=func.now()
         ),
     )
+
+    category: Optional["Category"] = Relationship()
+    subcategory: Optional["Subcategory"] = Relationship()

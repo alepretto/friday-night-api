@@ -1,0 +1,20 @@
+meta {
+  name: List Tags
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/v1/finance/tags
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

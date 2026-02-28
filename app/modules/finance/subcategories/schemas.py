@@ -12,7 +12,7 @@ class SubcategoryCreate(SQLModel):
     label: str
 
 
-class SubcategoryBase(SQLModel):
+class SubcategoryBase(SubcategoryCreate):
     id: uuid.UUID
 
     created_at: datetime
