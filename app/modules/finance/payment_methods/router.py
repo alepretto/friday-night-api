@@ -1,7 +1,9 @@
 from http import HTTPStatus
 from typing import Annotated
+import uuid
 
 from fastapi import APIRouter, Depends
+from fastapi_pagination import Page, Params
 
 from app.api.deps.core import get_current_user
 from app.api.deps.finance import get_payment_method_service
@@ -22,3 +24,44 @@ async def create_payment_methods(
     user: Annotated[User, Depends(get_current_user)],
 ):
     return await service.create_update(payload, user)
+
+
+@router.get("/{payment_method_id}", response_model=PaymentMethodResponse)
+async def get_by_id(
+    payment_method_id: uuid.UUID,
+    service: Annotated[PaymentMethodService, Depends(get_payment_method_service)],
+    user: Annotated[User, Depends(get_current_user)],
+):
+
+    return await service.get_by_id(payment_method_id, user)
+
+
+@router.patch("/{payment_method_id}/deactivate", response_model=PaymentMethodResponse)
+async def deactivate_method(
+    payment_method_id: uuid.UUID,
+    service: Annotated[PaymentMethodService, Depends(get_payment_method_service)],
+    user: Annotated[User, Depends(get_current_user)],
+):
+
+    return await service.toggle_state(payment_method_id, False, user)
+
+
+@router.patch("/{payment_method_id}/activate", response_model=PaymentMethodResponse)
+async def activate_method(
+    payment_method_id: uuid.UUID,
+    service: Annotated[PaymentMethodService, Depends(get_payment_method_service)],
+    user: Annotated[User, Depends(get_current_user)],
+):
+
+    return await service.toggle_state(payment_method_id, True, user)
+
+
+@router.get("", response_model=Page[PaymentMethodResponse])
+async def list_by_user(
+    service: Annotated[PaymentMethodService, Depends(get_payment_method_service)],
+    user: Annotated[User, Depends(get_current_user)],
+    params: Annotated[Params, Depends()],
+    active: bool | None = None,
+):
+
+    return await service.list_by_user(user, active, params)
