@@ -6,6 +6,7 @@ from sqlmodel import SQLModel
 
 from app.core.utils import to_local
 from app.modules.finance.categories.model import CategoryType
+from app.modules.finance.subcategories.schemas import SubcategoryBase
 
 
 class CategoryCreate(SQLModel):
@@ -24,3 +25,7 @@ class CategoryBase(CategoryCreate):
     @field_serializer("created_at", "updated_at")
     def to_iso(self, dt):
         return to_local(dt)
+
+
+class CategoryWithSubcategories(CategoryBase):
+    subcategories: list[SubcategoryBase] = []

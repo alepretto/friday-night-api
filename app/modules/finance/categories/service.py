@@ -5,7 +5,8 @@ from fastapi_pagination import Params
 from app.modules.finance.categories.exceptions import CategoryNotFound
 from app.modules.finance.categories.model import Category
 from app.modules.finance.categories.repo import CategoryRepo
-from app.modules.finance.categories.schemas import CategoryCreate
+from app.modules.finance.categories.schemas import CategoryCreate, CategoryWithSubcategories
+from app.modules.finance.subcategories.schemas import SubcategoryBase
 from app.modules.user.model import User
 
 
@@ -30,3 +31,14 @@ class CategoryService:
     async def list_by_user(self, user: User, params: Params | None = None):
 
         return await self.repo.list_by_user(user.id, params=params)
+
+    async def list_with_subcategories(self, user: User) -> list[CategoryWithSubcategories]:
+
+        pairs = await self.repo.list_with_subcategories(user.id)
+
+        return [
+            CategoryWithSubcategories.model_validate(
+                cat, update={"subcategories": [SubcategoryBase.model_validate(sub) for sub in subs]}
+            )
+            for cat, subs in pairs
+        ]
