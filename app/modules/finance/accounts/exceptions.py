@@ -3,6 +3,15 @@ import uuid
 from app.core.exception import FridayNightException
 
 
+class AccountNotFound(FridayNightException):
+    def __init__(
+        self,
+        message: str = "Account Not Found",
+        status_code: int = 404,
+    ) -> None:
+        super().__init__(message, status_code)
+
+
 class AccountAlreadyExists(FridayNightException):
     def __init__(
         self,

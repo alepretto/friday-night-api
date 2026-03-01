@@ -6,7 +6,10 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import select
 
-from app.modules.finance.accounts.exceptions import AccountAlreadyExists
+from app.modules.finance.accounts.exceptions import (
+    AccountAlreadyExists,
+    AccountNotFound,
+)
 from app.modules.finance.accounts.model import Account, AccountStatus, AccountType
 
 
@@ -31,6 +34,27 @@ class AccountRepo:
                 type=model.type,
                 subtype=model.subtype,
             ) from None
+
+    async def get_by_id(self, account_id: uuid.UUID, user_id: uuid.UUID) -> Account:
+
+        query = select(Account).where(
+            (Account.id == account_id) & (Account.user_id == user_id)
+        )
+        model = await self.db.scalar(query)
+        if not model:
+            raise AccountNotFound()
+
+        return model
+
+    async def toggle_status(
+        self, account_id: uuid.UUID, user_id: uuid.UUID, new_status: AccountStatus
+    ) -> Account:
+        model = await self.get_by_id(account_id, user_id)
+        model.status = new_status
+        self.db.add(model)
+        await self.db.commit()
+        await self.db.refresh(model)
+        return model
 
     async def list(
         self,
