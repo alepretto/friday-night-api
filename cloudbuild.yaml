@@ -20,7 +20,7 @@ steps:
 
   # Run database migrations
   - name: "us-central1-docker.pkg.dev/$PROJECT_ID/backend-py/api:$SHORT_SHA"
-    entrypoint: ".venv/bin/alembic"
+    entrypoint: "/app/.venv/bin/alembic"
     args: ["upgrade", "head"]
     secretEnv:
       [
