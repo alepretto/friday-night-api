@@ -1,72 +1,70 @@
 # Friday Night API
 
-Backend do meu **assistente pessoal**, construído com **FastAPI**, **SQLModel** e **Supabase Auth**.
+Backend do **Friday Night** — assistente pessoal de finanças, construído com **FastAPI**, **SQLModel** e **Supabase Auth**.
 
-A proposta do projeto é centralizar o gerenciamento da vida em um único sistema, evoluindo por módulos.  
-No momento, o foco está no **módulo financeiro**.
-
-## ✨ Visão geral
-
-Esta API expõe endpoints versionados em `/api/v1` e já possui base de autenticação e usuário para sustentar os próximos módulos.
-
-Objetivo atual do módulo financeiro:
-
-- Cadastrar e organizar **contas**.
-- Cadastrar e categorizar com **tags**.
-- Cadastrar e controlar **moedas**.
-- Cadastrar e acompanhar **investimentos**.
-- Monitorar tanto **gastos** quanto **patrimônio investido**.
-- Incluir acompanhamento de **ações (stocks)** e **criptomoedas**.
-
-A aplicação também inclui:
-
-- Configuração via variáveis de ambiente com `pydantic-settings`.
-- Banco de dados assíncrono com SQLAlchemy/SQLModel.
-- Migrações com Alembic.
-
-## 🧱 Stack principal
+## Stack
 
 - Python 3.12+
 - FastAPI
-- SQLModel + SQLAlchemy (async)
-- PostgreSQL (`asyncpg`)
-- Supabase Python SDK
+- SQLModel + SQLAlchemy (async) + asyncpg
+- PostgreSQL (schema `finance`)
+- Supabase Auth (JWT)
 - Alembic
+- uv
 
-## 📁 Estrutura do projeto
+## Estrutura do projeto
 
 ```text
 app/
   api/
-    deps/           # Dependências de autenticação, DB e serviços
-    versions/       # Versionamento de rotas (v1)
-    router.py       # Roteador principal (/api)
+    deps/           # DI: get_db, get_current_user, get_*_service
+    versions/v1/    # Registro de rotas (finance.py agrega todos os routers financeiros)
+    router.py       # Monta prefixo /api
   core/
-    config.py       # Settings e variáveis de ambiente
+    config.py       # pydantic-settings (DATABASE_URL, SUPABASE_*, DB_ECHO)
     database.py     # Engine e session async
-    exception.py    # Exceções base da aplicação
-  domain/
-    user/           # Model, service, repo e rotas de usuário
-  use_cases/
-    auth/           # Caso de uso de autenticação (signup/login)
-  main.py           # Inicialização da aplicação FastAPI
-alembic/            # Migrações de banco
+    exception.py    # FridayNightException base
+  modules/
+    auth/           # signup/login via Supabase SDK
+    user/           # perfil do usuário (CRUD)
+    finance/
+      accounts/             # contas bancárias/investimento/carteira
+      cards/                # cartões vinculados a contas bancárias
+      categories/           # categorias de transação (outcome/income)
+      subcategories/        # subcategorias
+      tags/                 # tag = categoria + subcategoria
+      currencies/           # moedas fiat e crypto
+      financial_institutions/  # bancos e corretoras
+      payment_methods/      # formas de pagamento
+      transactions/         # lançamentos financeiros
+      holdings/             # ativos de investimento vinculados a transações
+alembic/            # migrações de banco de dados
+tests/              # testes com pytest
 ```
 
-## ⚙️ Pré-requisitos
+Cada sub-módulo de `finance/` segue o padrão de 5 arquivos:
 
-- Python `>= 3.12`
+```text
+model.py       → tabela SQLModel
+schemas.py     → schemas Pydantic (Create / Response)
+repo.py        → acesso ao banco (repository pattern)
+service.py     → lógica de negócio
+router.py      → endpoints FastAPI
+exceptions.py  → exceções do módulo
+```
+
+## Pré-requisitos
+
+- Python >= 3.12
 - PostgreSQL disponível
 - Projeto Supabase configurado
-- [uv](https://docs.astral.sh/uv/) (recomendado) ou `pip`
+- [uv](https://docs.astral.sh/uv/)
 
-## 🔐 Variáveis de ambiente
+## Variáveis de ambiente
 
-Crie um arquivo `.env` na raiz com os campos abaixo:
+Crie um arquivo `.env` na raiz:
 
 ```env
-PROJECT_NAME=Friday Night API
-
 DATABASE_URL=postgresql+asyncpg://user:password@localhost:5432/friday_night
 DIRECT_URL=postgresql://user:password@localhost:5432/friday_night
 
@@ -77,98 +75,144 @@ SUPABASE_JWT_SECRET=<seu-jwt-secret>
 DB_ECHO=false
 ```
 
-## 🚀 Como executar localmente
-
-### 1) Instalar dependências
-
-Com `uv`:
+## Como executar
 
 ```bash
-uv sync
+uv sync                                       # instalar dependências
+alembic upgrade head                          # rodar migrações
+uv run uvicorn app.main:app --reload          # subir API
 ```
 
-Ou com `pip`:
+API disponível em `http://localhost:8000`.
+Swagger UI: `http://localhost:8000/docs` — ReDoc: `http://localhost:8000/redoc`
+
+## Comandos úteis
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -e .
+uv run pytest                                 # todos os testes
+uv run pytest tests/test_accounts.py          # arquivo específico
+uv run pytest tests/test_accounts.py::test_fn # teste específico
+ruff check .                                  # lint
+ruff format .                                 # format
+pyright .                                     # type check
+alembic revision --autogenerate -m "msg"      # gerar migração
+alembic upgrade head                          # aplicar migrações
 ```
 
-### 2) Rodar migrações
+## Endpoints — `/api/v1`
 
-```bash
-alembic upgrade head
-```
-
-### 3) Subir a API
-
-```bash
-uv run uvicorn app.main:app --reload
-```
-
-A API ficará disponível em `http://127.0.0.1:8000`.
-
-- Swagger UI: `http://127.0.0.1:8000/docs`
-- ReDoc: `http://127.0.0.1:8000/redoc`
-
-## 📡 Endpoints atuais
-
-Base URL: `/api/v1`
+Rotas protegidas exigem `Authorization: Bearer <access_token>`.
 
 ### Auth
 
-- `POST /auth/signup`
-  - Cria usuário no Supabase.
-  - Body:
+| Método | Rota            | Descrição                      |
+|--------|-----------------|--------------------------------|
+| POST   | /auth/signup    | Cadastrar usuário              |
+| POST   | /auth/login     | Login — retorna access_token   |
 
-```json
-{
-  "email": "user@example.com",
-  "password": "senha_forte",
-  "first_name": "Nome",
-  "last_name": "Sobrenome"
-}
-```
+### Usuários 🔒
 
-- `POST /auth/login`
-  - Autentica usuário e retorna token bearer.
-  - Body:
+| Método | Rota        | Descrição            |
+|--------|-------------|----------------------|
+| GET    | /users/me   | Dados do usuário     |
+| PATCH  | /users/me   | Atualizar perfil     |
+| DELETE | /users/me   | Deletar conta        |
 
-```json
-{
-  "email": "user@example.com",
-  "password": "senha_forte"
-}
-```
+### Instituições Financeiras
 
-### Usuário
+| Método | Rota                              | Descrição                  |
+|--------|-----------------------------------|----------------------------|
+| POST   | /finance/financial-institutions   | Criar instituição          |
+| GET    | /finance/financial-institutions   | Listar (filtro por `type`) |
+| GET    | /finance/financial-institutions/{id} | Buscar por ID           |
 
-> Requer header `Authorization: Bearer <token>`
+### Contas 🔒
 
-- `GET /users/me` — retorna usuário autenticado.
-- `PATCH /users/me` — atualiza dados do perfil (`first_name`, `last_name`, `avatar_url`, `language`).
+| Método | Rota                                | Descrição         |
+|--------|-------------------------------------|-------------------|
+| POST   | /finance/accounts                   | Criar conta       |
+| GET    | /finance/accounts                   | Listar contas     |
+| GET    | /finance/accounts/{id}              | Buscar por ID     |
+| PATCH  | /finance/accounts/{id}/archive      | Arquivar          |
+| PATCH  | /finance/accounts/{id}/activate     | Ativar            |
 
-## 🗺️ Roadmap (financeiro)
+### Cartões 🔒
 
-- [ ] Módulo de contas (conta corrente, carteira, conta digital etc.)
-- [ ] Módulo de tags para classificação de gastos e receitas
-- [ ] Módulo de moedas e conversão
-- [ ] Módulo de investimentos
-  - [ ] Ações (stocks)
-  - [ ] Criptomoedas
-- [ ] Relatórios e visão consolidada (gastos x investimentos)
+| Método | Rota                  | Descrição                        |
+|--------|-----------------------|----------------------------------|
+| POST   | /finance/cards        | Criar cartão                     |
+| GET    | /finance/cards        | Listar por conta (`?account_id`) |
+| GET    | /finance/cards/{id}   | Buscar por ID                    |
+| DELETE | /finance/cards/{id}   | Deletar cartão                   |
 
-## 🧪 Desenvolvimento
+Campos: `label`, `flag` (visa/mastercard), `close_day`, `due_day`, `limit`.
 
-Dependências de desenvolvimento já estão declaradas no `pyproject.toml` (pytest, ruff, pyright etc.).
+### Categorias 🔒
 
-Exemplo para rodar testes quando disponíveis:
+| Método | Rota                          | Descrição              |
+|--------|-------------------------------|------------------------|
+| POST   | /finance/categories           | Criar categoria        |
+| GET    | /finance/categories           | Listar                 |
+| GET    | /finance/categories/{id}      | Buscar por ID          |
 
-```bash
-uv run pytest
-```
+### Subcategorias 🔒
 
-## 📜 Licença
+| Método | Rota                                        | Descrição                    |
+|--------|---------------------------------------------|------------------------------|
+| POST   | /finance/subcategories                      | Criar subcategoria           |
+| GET    | /finance/subcategories/{id}                 | Buscar por ID                |
+| GET    | /finance/subcategories/list/{category_id}   | Listar por categoria         |
+
+### Tags 🔒
+
+| Método | Rota                              | Descrição              |
+|--------|-----------------------------------|------------------------|
+| POST   | /finance/tags                     | Criar tag              |
+| GET    | /finance/tags                     | Listar (`?active=true`)|
+| GET    | /finance/tags/{id}                | Buscar por ID          |
+| PATCH  | /finance/tags/{id}/activate       | Ativar                 |
+| PATCH  | /finance/tags/{id}/deactivate     | Desativar              |
+
+### Métodos de Pagamento 🔒
+
+| Método | Rota                                        | Descrição    |
+|--------|---------------------------------------------|--------------|
+| POST   | /finance/payment-methods                    | Criar        |
+| GET    | /finance/payment-methods                    | Listar       |
+| GET    | /finance/payment-methods/{id}               | Buscar por ID|
+| PATCH  | /finance/payment-methods/{id}/activate      | Ativar       |
+| PATCH  | /finance/payment-methods/{id}/deactivate    | Desativar    |
+
+### Moedas 🔒
+
+| Método | Rota                  | Descrição              |
+|--------|-----------------------|------------------------|
+| POST   | /finance/currencies   | Criar moeda            |
+| GET    | /finance/currencies   | Listar (`type`: fiat/cripto) |
+
+### Transações 🔒
+
+| Método | Rota                    | Descrição         |
+|--------|-------------------------|-------------------|
+| POST   | /finance/transactions   | Criar transação   |
+| GET    | /finance/transactions   | Listar por conta  |
+
+### Holdings 🔒
+
+| Método | Rota                  | Descrição           |
+|--------|-----------------------|---------------------|
+| POST   | /finance/holdings     | Criar holding       |
+
+## Convenções
+
+- **IDs**: UUID v7 (time-ordered)
+- **Paginação**: `fastapi-pagination` → `{ items, total, page, size, pages }` em todos os GETs de listagem
+- **Valores monetários**: `Decimal` serializado como string (até 28 dígitos, 6 casas decimais)
+- **Datas**: retornadas no timezone local via `to_local()`
+- **Erros de aplicação**: `{ "error": "NomeDoErro", "message": "..." }`
+- **Erros de auth**: `{ "message": "...", "detail": "..." }`
+- **Token expirado**: 401 com `{ "detail": "Sessão expirada" }`
+
+## Licença
 
 Este projeto está sob a licença definida no arquivo `LICENSE`.
