@@ -4,9 +4,9 @@ steps:
     args:
       - "build"
       - "-t"
-      - "us-central1-docker.pkg.dev/$PROJECT_ID/friday-night/api:$SHORT_SHA"
+      - "us-central1-docker.pkg.dev/$PROJECT_ID/backend-py/api:$SHORT_SHA"
       - "-t"
-      - "us-central1-docker.pkg.dev/$PROJECT_ID/friday-night/api:latest"
+      - "us-central1-docker.pkg.dev/$PROJECT_ID/backend-py/api:latest"
       - "."
 
   # Push image to Artifact Registry
@@ -15,11 +15,11 @@ steps:
       [
         "push",
         "--all-tags",
-        "us-central1-docker.pkg.dev/$PROJECT_ID/friday-night/api",
+        "us-central1-docker.pkg.dev/$PROJECT_ID/backend-py/api",
       ]
 
   # Run database migrations
-  - name: "us-central1-docker.pkg.dev/$PROJECT_ID/friday-night/api:$SHORT_SHA"
+  - name: "us-central1-docker.pkg.dev/$PROJECT_ID/backend-py/api:$SHORT_SHA"
     entrypoint: ".venv/bin/alembic"
     args: ["upgrade", "head"]
     secretEnv:
@@ -37,9 +37,9 @@ steps:
     args:
       - "run"
       - "deploy"
-      - "friday-night-api"
+      - "backend-py-api"
       - "--image"
-      - "us-central1-docker.pkg.dev/$PROJECT_ID/friday-night/api:$SHORT_SHA"
+      - "us-central1-docker.pkg.dev/$PROJECT_ID/backend-py/api:$SHORT_SHA"
       - "--region"
       - "us-central1"
       - "--platform"
@@ -77,4 +77,4 @@ options:
   logging: CLOUD_LOGGING_ONLY
 
 images:
-  - "us-central1-docker.pkg.dev/$PROJECT_ID/friday-night/api"
+  - "us-central1-docker.pkg.dev/$PROJECT_ID/backend-py/api"
