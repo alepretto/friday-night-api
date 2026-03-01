@@ -14,6 +14,11 @@ class TagCreate(SQLModel):
     active: bool = True
 
 
+class TagUpdate(SQLModel):
+    category_id: uuid.UUID
+    subcategory_id: uuid.UUID
+
+
 class CategoryInTag(SQLModel):
     id: uuid.UUID
     label: str
