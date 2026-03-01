@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 import pytest
 
 
@@ -32,7 +34,7 @@ async def test_transaction_create(
     assert data["account_id"] == str(account.id)
     assert data["tag_id"] == str(tag.id)
     assert data["currency_id"] == str(currency.id)
-    assert float(data["value"]) == 100.0
+    assert Decimal(data["value"]) == Decimal("100.0")
 
 
 @pytest.mark.asyncio
@@ -151,7 +153,7 @@ async def test_transaction_update(
     )
 
     assert response.status_code == 200
-    assert float(response.json()["value"]) == 999.99
+    assert Decimal(response.json()["value"]) == Decimal("999.99")
     assert response.json()["description"] == "Atualizado"
 
 
