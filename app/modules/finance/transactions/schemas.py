@@ -14,6 +14,7 @@ class TransactionCreate(SQLModel):
     tag_id: uuid.UUID
     payment_method_id: uuid.UUID
     currency_id: uuid.UUID
+    card_id: Optional[uuid.UUID] = None
 
     value: Decimal
     description: Optional[str] = None

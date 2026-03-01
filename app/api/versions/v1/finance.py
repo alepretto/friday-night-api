@@ -11,6 +11,7 @@ from app.modules.finance.financial_institutions.router import (
 from app.modules.finance.transactions.router import router as transaction_router
 from app.modules.finance.payment_methods.router import router as payment_methods_router
 from app.modules.finance.holdings.router import router as holding_router
+from app.modules.finance.cards.router import router as card_router
 
 
 finance_router = APIRouter(prefix="/finance", tags=["finance"])
@@ -25,3 +26,4 @@ finance_router.include_router(financial_institutions_router)
 finance_router.include_router(transaction_router)
 finance_router.include_router(payment_methods_router)
 finance_router.include_router(holding_router)
+finance_router.include_router(card_router)

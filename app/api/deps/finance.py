@@ -25,6 +25,8 @@ from app.modules.finance.payment_methods.repo import PaymentMethodRepo
 from app.modules.finance.payment_methods.service import PaymentMethodService
 from app.modules.finance.holdings.repo import HoldingRepo
 from app.modules.finance.holdings.service import HoldingService
+from app.modules.finance.cards.repo import CardRepo
+from app.modules.finance.cards.service import CardService
 
 
 def get_category_service(db: Annotated[AsyncSession, Depends(get_db)]):
@@ -75,3 +77,8 @@ def get_payment_method_service(db: Annotated[AsyncSession, Depends(get_db)]):
 def get_holding_service(db: Annotated[AsyncSession, Depends(get_db)]):
     repo = HoldingRepo(db)
     return HoldingService(repo)
+
+
+def get_card_service(db: Annotated[AsyncSession, Depends(get_db)]):
+    repo = CardRepo(db)
+    return CardService(repo)
