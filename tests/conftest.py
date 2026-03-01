@@ -14,6 +14,7 @@ from app.api.deps.core import get_db, get_supabase_client
 from app.main import app
 from tests.factories import (
     AccountFactory,
+    CardFactory,
     CategoryFactory,
     CurrencyFactory,
     FinancialInstitutionFactory,
@@ -236,6 +237,28 @@ async def tag_factory(db_session, user_factory, category_factory, subcategory_fa
         return model
 
     return _cria_tag
+
+
+@pytest_asyncio.fixture
+async def card_factory(db_session, user_factory, account_factory):
+
+    async def _cria_card(**kwargs):
+
+        if "user_id" not in kwargs:
+            user = await user_factory()
+            kwargs["user_id"] = user.id
+
+        if "account_id" not in kwargs:
+            account = await account_factory(user_id=kwargs["user_id"])
+            kwargs["account_id"] = account.id
+
+        model = CardFactory.build(**kwargs)
+        db_session.add(model)
+        await db_session.commit()
+        await db_session.refresh(model)
+        return model
+
+    return _cria_card
 
 
 @pytest_asyncio.fixture

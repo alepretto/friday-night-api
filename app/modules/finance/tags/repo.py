@@ -25,7 +25,7 @@ class TagRepo:
         try:
             self.db.add(model)
             await self.db.commit()
-            await self.db.refresh(model, ["category", "subcategory"])
+            await self.db.refresh(model)
 
             return model
 
@@ -48,7 +48,7 @@ class TagRepo:
         try:
             self.db.add(tag)
             await self.db.commit()
-            await self.db.refresh(tag, ["category", "subcategory"])
+            await self.db.refresh(tag)
             return tag
 
         except IntegrityError:

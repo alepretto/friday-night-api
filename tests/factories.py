@@ -86,10 +86,26 @@ class CurrencyFactory(SQLAlchemyFactory[modules.finance.Currency]):
     __set_relationships__ = False
 
 
+class CardFactory(SQLAlchemyFactory[modules.finance.Card]):
+    __model__ = modules.finance.Card
+
+    __set_relationships__ = False
+
+    @classmethod
+    def user_id(cls):
+        return UserFactory.build().id
+
+    @classmethod
+    def account_id(cls):
+        return AccountFactory.build().id
+
+
 class TransactionFactory(SQLAlchemyFactory[modules.finance.Transaction]):
     __model__ = modules.finance.Transaction
 
     __set_relationships__ = False
+
+    card_id = None
 
     @classmethod
     def user_id(cls):
