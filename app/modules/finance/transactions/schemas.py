@@ -28,5 +28,5 @@ class TransactionResponse(TransactionCreate):
     updated_at: datetime
 
     @field_serializer("created_at", "updated_at", "date_transaction")
-    def serialize_datetime(self, dt: datetime):
-        return to_local(dt)
+    def serialize_datetime(self, dt: Optional[datetime]):
+        return to_local(dt) if dt is not None else None
