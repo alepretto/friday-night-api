@@ -1,7 +1,6 @@
 # Friday Night API
 
 Backend do **Friday Night** — assistente pessoal de finanças, construído com **FastAPI**, **SQLModel** e **Supabase Auth**.
-.
 
 ## Stack
 
