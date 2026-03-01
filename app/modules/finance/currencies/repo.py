@@ -13,6 +13,7 @@ from app.modules.finance.currencies.exceptions import (
 )
 
 from .model import Currency, CurrencyType
+from .schema import CurrencyUpdate
 
 
 class CurrencyRepo:
@@ -33,6 +34,20 @@ class CurrencyRepo:
             raise CurrencyAlreadyExists(
                 label=model.label, symbol=model.symbol
             ) from None
+
+    async def update(self, currency_id: uuid.UUID, payload: CurrencyUpdate) -> Currency:
+        model = await self.get_by_id(currency_id)
+        update_data = payload.model_dump(exclude_unset=True)
+        for key, value in update_data.items():
+            setattr(model, key, value)
+        try:
+            self.db.add(model)
+            await self.db.commit()
+            await self.db.refresh(model)
+            return model
+        except IntegrityError:
+            await self.db.rollback()
+            raise CurrencyAlreadyExists(label=model.label, symbol=model.symbol) from None
 
     async def get_by_id(self, currency_id: uuid.UUID) -> Currency:
         model = await self.db.get(Currency, currency_id)

@@ -11,7 +11,7 @@ from app.modules.finance.currencies.model import CurrencyType
 from app.modules.finance.currencies.service import CurrencyService
 from app.modules.user.model import User
 
-from .schema import CurrencyCreate, CurrencyResponse
+from .schema import CurrencyCreate, CurrencyUpdate, CurrencyResponse
 
 router = APIRouter(prefix="/currencies", tags=["currencies"])
 
@@ -23,6 +23,16 @@ async def create_currency(
     user: Annotated[User, Depends(get_current_user)],
 ):
     return await service.create_update(payload)
+
+
+@router.patch("/{currency_id}", response_model=CurrencyResponse)
+async def update_currency(
+    currency_id: uuid.UUID,
+    payload: CurrencyUpdate,
+    service: Annotated[CurrencyService, Depends(get_currency_service)],
+    user: Annotated[User, Depends(get_current_user)],
+):
+    return await service.update(currency_id, payload)
 
 
 @router.get("/{currency_id}", response_model=CurrencyResponse)
