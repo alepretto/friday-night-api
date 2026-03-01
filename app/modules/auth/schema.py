@@ -18,3 +18,7 @@ class TokenResponse(BaseModel):
     access_token: str
     token_type: str
     user: dict
+
+
+class TelegramAuthRequest(BaseModel):
+    init_data: str

@@ -11,6 +11,8 @@ class Settings(BaseSettings):
     SUPABASE_SERVICE_ROLE_KEY: str
     SUPABASE_JWT_SECRET: str
 
+    TELEGRAM_BOT_TOKEN: str = ""
+
     DB_ECHO: bool = False
 
     CORS_ORIGINS: list[str] = ["http://localhost:5173"]

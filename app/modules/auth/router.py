@@ -1,10 +1,11 @@
 from typing import Annotated
 
 from fastapi import APIRouter, Depends
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.api.deps.core import get_auth_service
+from app.api.deps.core import get_auth_service, get_db
 
-from .schema import UserSignIn, UserSignUp
+from .schema import TelegramAuthRequest, UserSignIn, UserSignUp
 from .service import AuthService
 
 router = APIRouter(prefix="/auth")
@@ -31,3 +32,12 @@ async def signin(
     response = await service.login_user(login_data)
 
     return response
+
+
+@router.post("/telegram")
+async def telegram_auth(
+    body: TelegramAuthRequest,
+    service: Annotated[AuthService, Depends(get_auth_service)],
+    db: Annotated[AsyncSession, Depends(get_db)],
+):
+    return await service.login_with_telegram(body.init_data, db)
