@@ -1,3 +1,5 @@
+import uuid
+
 from fastapi import APIRouter, Depends
 from fastapi_pagination import Page
 
@@ -21,6 +23,14 @@ async def create_financial_institution(
 ):
 
     return await service.create_update(infos_data)
+
+
+@router.get("/{institution_id}", response_model=FinancialInstitutionResponse)
+async def get_financial_institution(
+    institution_id: uuid.UUID,
+    service: FinancialInstitutionService = Depends(get_financial_institution_service),
+):
+    return await service.get_by_id(institution_id)
 
 
 @router.get("", response_model=Page[FinancialInstitutionResponse])
