@@ -27,6 +27,15 @@ async def create_account(
     return await service.create_update(payload, user)
 
 
+@router.get("/{account_id}", response_model=AccountResponse)
+async def get_account(
+    account_id: uuid.UUID,
+    service: Annotated[AccountService, Depends(get_account_service)],
+    user: Annotated[User, Depends(get_current_user)],
+):
+    return await service.get_by_id(account_id, user)
+
+
 @router.patch("/{account_id}/archive", response_model=AccountResponse)
 async def archive_account(
     account_id: uuid.UUID,
