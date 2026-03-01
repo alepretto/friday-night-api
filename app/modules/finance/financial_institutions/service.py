@@ -1,3 +1,5 @@
+import uuid
+
 from fastapi_pagination import Params
 
 from app.modules.finance.financial_institutions.model import (
@@ -18,6 +20,9 @@ class FinancialInstitutionService:
 
         model = FinancialInstitution.model_validate(schema)
         return await self.repo.create_update(model)
+
+    async def get_by_id(self, institution_id: uuid.UUID):
+        return await self.repo.get_by_id(institution_id)
 
     async def list(
         self, type: InstitutionType | None = None, params: Params | None = None

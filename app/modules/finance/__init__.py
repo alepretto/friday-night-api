@@ -7,10 +7,12 @@ from .financial_institutions.model import FinancialInstitution
 from .transactions.model import Transaction
 from .payment_methods.model import PaymentMethod
 from .holdings.model import Holding
+from .cards.model import Card
 
 
 __all__ = [
     "Account",
+    "Card",
     "Category",
     "Currency",
     "FinancialInstitution",

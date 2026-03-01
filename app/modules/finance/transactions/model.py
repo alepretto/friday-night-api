@@ -21,6 +21,9 @@ class Transaction(SQLModel, table=True):
         foreign_key="finance.payment_methods.id", index=True
     )
     currency_id: uuid.UUID = Field(foreign_key="finance.currencies.id")
+    card_id: Optional[uuid.UUID] = Field(
+        default=None, foreign_key="finance.cards.id", nullable=True, index=True
+    )
 
     value: Decimal = Field(DECIMAL(28, 6))
 

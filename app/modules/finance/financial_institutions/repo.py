@@ -1,3 +1,5 @@
+import uuid
+
 from fastapi_pagination import Params
 from fastapi_pagination.ext.sqlalchemy import apaginate
 from sqlalchemy.exc import IntegrityError
@@ -9,7 +11,7 @@ from app.modules.finance.financial_institutions.model import (
     InstitutionType,
 )
 
-from .exceptions import FinancialInstitutionsAlreadyExists
+from .exceptions import FinancialInstitutionNotFound, FinancialInstitutionsAlreadyExists
 
 
 class FinancialInstitutionsRepo:
@@ -30,6 +32,15 @@ class FinancialInstitutionsRepo:
             raise FinancialInstitutionsAlreadyExists(
                 institution=model.name, type=model.type.value
             ) from None
+
+    async def get_by_id(self, institution_id: uuid.UUID) -> FinancialInstitution:
+        query = select(FinancialInstitution).where(
+            FinancialInstitution.id == institution_id
+        )
+        model = await self.db.scalar(query)
+        if not model:
+            raise FinancialInstitutionNotFound()
+        return model
 
     async def list(
         self, type: InstitutionType | None = None, params: Params | None = None

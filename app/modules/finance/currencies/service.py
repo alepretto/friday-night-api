@@ -6,7 +6,7 @@ from fastapi_pagination import Params
 from app.modules.finance.currencies.model import Currency, CurrencyType
 from app.modules.finance.currencies.repo import CurrencyRepo
 
-from .schema import CurrencyCreate
+from .schema import CurrencyCreate, CurrencyUpdate
 
 
 class CurrencyService:
@@ -16,6 +16,9 @@ class CurrencyService:
     async def create_update(self, payload: CurrencyCreate):
         model = Currency.model_validate(payload)
         return await self.repo.create_update(model)
+
+    async def update(self, currency_id: uuid.UUID, payload: CurrencyUpdate):
+        return await self.repo.update(currency_id, payload)
 
     async def get_by_id(self, currency_id: uuid.UUID):
         return await self.repo.get_by_id(currency_id)
