@@ -1,0 +1,28 @@
+meta {
+  name: Create Financial Instituion
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/v1/finance/financial-institutions
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "name": "Pluexee",
+    "type": "fintech",
+    "icon_url": "logo-pluxee.png"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -13,7 +13,7 @@ from app.modules.finance.financial_institutions.service import (
     FinancialInstitutionService,
 )
 
-router = APIRouter(prefix="/financial-institutions")
+router = APIRouter(prefix="/financial-institutions", tags=["financial-instituions"])
 
 
 @router.post("", response_model=FinancialInstitutionResponse)
