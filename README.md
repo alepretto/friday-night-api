@@ -1,6 +1,7 @@
 # Friday Night API
 
 Backend do **Friday Night** — assistente pessoal de finanças, construído com **FastAPI**, **SQLModel** e **Supabase Auth**.
+.
 
 ## Stack
 
@@ -129,103 +130,103 @@ Rotas protegidas exigem `Authorization: Bearer <access_token>`.
 
 ### Auth
 
-| Método | Rota            | Descrição                      |
-|--------|-----------------|--------------------------------|
-| POST   | /auth/signup    | Cadastrar usuário              |
-| POST   | /auth/login     | Login — retorna access_token   |
+| Método | Rota         | Descrição                    |
+| ------ | ------------ | ---------------------------- |
+| POST   | /auth/signup | Cadastrar usuário            |
+| POST   | /auth/login  | Login — retorna access_token |
 
 ### Usuários 🔒
 
-| Método | Rota        | Descrição            |
-|--------|-------------|----------------------|
-| GET    | /users/me   | Dados do usuário     |
-| PATCH  | /users/me   | Atualizar perfil     |
-| DELETE | /users/me   | Deletar conta        |
+| Método | Rota      | Descrição        |
+| ------ | --------- | ---------------- |
+| GET    | /users/me | Dados do usuário |
+| PATCH  | /users/me | Atualizar perfil |
+| DELETE | /users/me | Deletar conta    |
 
 ### Instituições Financeiras
 
-| Método | Rota                              | Descrição                  |
-|--------|-----------------------------------|----------------------------|
-| POST   | /finance/financial-institutions   | Criar instituição          |
-| GET    | /finance/financial-institutions   | Listar (filtro por `type`) |
-| GET    | /finance/financial-institutions/{id} | Buscar por ID           |
+| Método | Rota                                 | Descrição                  |
+| ------ | ------------------------------------ | -------------------------- |
+| POST   | /finance/financial-institutions      | Criar instituição          |
+| GET    | /finance/financial-institutions      | Listar (filtro por `type`) |
+| GET    | /finance/financial-institutions/{id} | Buscar por ID              |
 
 ### Contas 🔒
 
-| Método | Rota                                | Descrição         |
-|--------|-------------------------------------|-------------------|
-| POST   | /finance/accounts                   | Criar conta       |
-| GET    | /finance/accounts                   | Listar contas     |
-| GET    | /finance/accounts/{id}              | Buscar por ID     |
-| PATCH  | /finance/accounts/{id}/archive      | Arquivar          |
-| PATCH  | /finance/accounts/{id}/activate     | Ativar            |
+| Método | Rota                            | Descrição     |
+| ------ | ------------------------------- | ------------- |
+| POST   | /finance/accounts               | Criar conta   |
+| GET    | /finance/accounts               | Listar contas |
+| GET    | /finance/accounts/{id}          | Buscar por ID |
+| PATCH  | /finance/accounts/{id}/archive  | Arquivar      |
+| PATCH  | /finance/accounts/{id}/activate | Ativar        |
 
 ### Cartões 🔒
 
-| Método | Rota                  | Descrição                        |
-|--------|-----------------------|----------------------------------|
-| POST   | /finance/cards        | Criar cartão                     |
-| GET    | /finance/cards        | Listar por conta (`?account_id`) |
-| GET    | /finance/cards/{id}   | Buscar por ID                    |
-| DELETE | /finance/cards/{id}   | Deletar cartão                   |
+| Método | Rota                | Descrição                        |
+| ------ | ------------------- | -------------------------------- |
+| POST   | /finance/cards      | Criar cartão                     |
+| GET    | /finance/cards      | Listar por conta (`?account_id`) |
+| GET    | /finance/cards/{id} | Buscar por ID                    |
+| DELETE | /finance/cards/{id} | Deletar cartão                   |
 
 Campos: `label`, `flag` (visa/mastercard), `close_day`, `due_day`, `limit`.
 
 ### Categorias 🔒
 
-| Método | Rota                          | Descrição              |
-|--------|-------------------------------|------------------------|
-| POST   | /finance/categories           | Criar categoria        |
-| GET    | /finance/categories           | Listar                 |
-| GET    | /finance/categories/{id}      | Buscar por ID          |
+| Método | Rota                     | Descrição       |
+| ------ | ------------------------ | --------------- |
+| POST   | /finance/categories      | Criar categoria |
+| GET    | /finance/categories      | Listar          |
+| GET    | /finance/categories/{id} | Buscar por ID   |
 
 ### Subcategorias 🔒
 
-| Método | Rota                                        | Descrição                    |
-|--------|---------------------------------------------|------------------------------|
-| POST   | /finance/subcategories                      | Criar subcategoria           |
-| GET    | /finance/subcategories/{id}                 | Buscar por ID                |
-| GET    | /finance/subcategories/list/{category_id}   | Listar por categoria         |
+| Método | Rota                                      | Descrição            |
+| ------ | ----------------------------------------- | -------------------- |
+| POST   | /finance/subcategories                    | Criar subcategoria   |
+| GET    | /finance/subcategories/{id}               | Buscar por ID        |
+| GET    | /finance/subcategories/list/{category_id} | Listar por categoria |
 
 ### Tags 🔒
 
-| Método | Rota                              | Descrição              |
-|--------|-----------------------------------|------------------------|
-| POST   | /finance/tags                     | Criar tag              |
-| GET    | /finance/tags                     | Listar (`?active=true`)|
-| GET    | /finance/tags/{id}                | Buscar por ID          |
-| PATCH  | /finance/tags/{id}/activate       | Ativar                 |
-| PATCH  | /finance/tags/{id}/deactivate     | Desativar              |
+| Método | Rota                          | Descrição               |
+| ------ | ----------------------------- | ----------------------- |
+| POST   | /finance/tags                 | Criar tag               |
+| GET    | /finance/tags                 | Listar (`?active=true`) |
+| GET    | /finance/tags/{id}            | Buscar por ID           |
+| PATCH  | /finance/tags/{id}/activate   | Ativar                  |
+| PATCH  | /finance/tags/{id}/deactivate | Desativar               |
 
 ### Métodos de Pagamento 🔒
 
-| Método | Rota                                        | Descrição    |
-|--------|---------------------------------------------|--------------|
-| POST   | /finance/payment-methods                    | Criar        |
-| GET    | /finance/payment-methods                    | Listar       |
-| GET    | /finance/payment-methods/{id}               | Buscar por ID|
-| PATCH  | /finance/payment-methods/{id}/activate      | Ativar       |
-| PATCH  | /finance/payment-methods/{id}/deactivate    | Desativar    |
+| Método | Rota                                     | Descrição     |
+| ------ | ---------------------------------------- | ------------- |
+| POST   | /finance/payment-methods                 | Criar         |
+| GET    | /finance/payment-methods                 | Listar        |
+| GET    | /finance/payment-methods/{id}            | Buscar por ID |
+| PATCH  | /finance/payment-methods/{id}/activate   | Ativar        |
+| PATCH  | /finance/payment-methods/{id}/deactivate | Desativar     |
 
 ### Moedas 🔒
 
-| Método | Rota                  | Descrição              |
-|--------|-----------------------|------------------------|
-| POST   | /finance/currencies   | Criar moeda            |
-| GET    | /finance/currencies   | Listar (`type`: fiat/cripto) |
+| Método | Rota                | Descrição                    |
+| ------ | ------------------- | ---------------------------- |
+| POST   | /finance/currencies | Criar moeda                  |
+| GET    | /finance/currencies | Listar (`type`: fiat/cripto) |
 
 ### Transações 🔒
 
-| Método | Rota                    | Descrição         |
-|--------|-------------------------|-------------------|
-| POST   | /finance/transactions   | Criar transação   |
-| GET    | /finance/transactions   | Listar por conta  |
+| Método | Rota                  | Descrição        |
+| ------ | --------------------- | ---------------- |
+| POST   | /finance/transactions | Criar transação  |
+| GET    | /finance/transactions | Listar por conta |
 
 ### Holdings 🔒
 
-| Método | Rota                  | Descrição           |
-|--------|-----------------------|---------------------|
-| POST   | /finance/holdings     | Criar holding       |
+| Método | Rota              | Descrição     |
+| ------ | ----------------- | ------------- |
+| POST   | /finance/holdings | Criar holding |
 
 ## Convenções
 
