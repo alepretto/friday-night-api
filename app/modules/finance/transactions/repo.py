@@ -21,6 +21,15 @@ class TransactionRepo:
 
         return model
 
+    async def get_by_id(self, transaction_id: uuid.UUID) -> Optional[Transaction]:
+        query = select(Transaction).where(Transaction.id == transaction_id)
+        result = await self.db.execute(query)
+        return result.scalar_one_or_none()
+
+    async def delete(self, model: Transaction):
+        await self.db.delete(model)
+        await self.db.commit()
+
     async def list_by_account(
         self,
         account_id: uuid.UUID,

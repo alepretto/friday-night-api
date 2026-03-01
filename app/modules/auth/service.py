@@ -1,6 +1,10 @@
+from sqlalchemy.ext.asyncio import AsyncSession
 from supabase._async.client import AsyncClient
 
-from app.modules.auth.exceptions import AuthUserNotFound, SessionFiledError
+from app.core.config import settings
+from app.modules.auth.exceptions import AuthUserNotFound, SessionFiledError, TelegramUserNotLinked
+from app.modules.auth.telegram import extract_telegram_id, validate_init_data
+from app.modules.user.repo import UserRepo
 
 from .schema import UserSignIn, UserSignUp
 
@@ -44,4 +48,30 @@ class AuthService:
             "access_token": session.access_token,
             "token_type": "bearer",
             "user": user.model_dump(),
+        }
+
+    async def login_with_telegram(self, init_data: str, db: AsyncSession) -> dict:
+        parsed = validate_init_data(init_data, settings.TELEGRAM_BOT_TOKEN)
+        telegram_id = extract_telegram_id(parsed)
+
+        user = await UserRepo(db).get_by_telegram_id(telegram_id)
+        if not user:
+            raise TelegramUserNotLinked()
+
+        link_response = await self.supabase.auth.admin.generate_link(
+            {"type": "magiclink", "email": user.email}
+        )
+        hashed_token = link_response.properties.hashed_token
+
+        auth_response = await self.supabase.auth.verify_otp(
+            {"email": user.email, "token": hashed_token, "type": "magiclink"}
+        )
+
+        session = auth_response.session
+        if not session:
+            raise SessionFiledError()
+
+        return {
+            "access_token": session.access_token,
+            "token_type": "bearer",
         }

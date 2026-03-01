@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends
 
 from app.api.deps.core import get_current_user
 from app.api.deps.domain import get_user_service
-from app.modules.user.schemas import UserUpdate
+from app.modules.user.schemas import LinkTelegramRequest, UserUpdate
 from app.modules.user.service import UserService
 
 from .model import User
@@ -36,3 +36,12 @@ async def delete_me(
 ):
 
     await service.delete(user)
+
+
+@router.post("/me/telegram")
+async def link_telegram(
+    body: LinkTelegramRequest,
+    service: Annotated[UserService, Depends(get_user_service)],
+    user: User = Depends(get_current_user),
+):
+    return await service.link_telegram_account(body.init_data, user)

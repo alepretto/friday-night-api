@@ -17,3 +17,21 @@ class AuthUserNotFound(FridayNightException):
         status_code: int = 401,
     ) -> None:
         super().__init__(message, status_code)
+
+
+class TelegramAuthError(FridayNightException):
+    def __init__(
+        self,
+        message: str = "Autenticação Telegram inválida.",
+        status_code: int = 401,
+    ) -> None:
+        super().__init__(message, status_code)
+
+
+class TelegramUserNotLinked(FridayNightException):
+    def __init__(
+        self,
+        message: str = "Nenhum usuário vinculado a este Telegram.",
+        status_code: int = 404,
+    ) -> None:
+        super().__init__(message, status_code)

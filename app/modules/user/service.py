@@ -1,3 +1,5 @@
+from app.core.config import settings
+from app.modules.auth.telegram import extract_telegram_id, validate_init_data
 from app.modules.user.model import User
 from app.modules.user.repo import UserRepo
 from app.modules.user.schemas import UserUpdate
@@ -17,3 +19,9 @@ class UserService:
 
     async def delete(self, user: User):
         await self.repo.delete_user(user)
+
+    async def link_telegram_account(self, init_data: str, user: User) -> User:
+        parsed = validate_init_data(init_data, settings.TELEGRAM_BOT_TOKEN)
+        telegram_id = extract_telegram_id(parsed)
+        user.telegram_id = telegram_id
+        return await self.repo.updated_user(user)
