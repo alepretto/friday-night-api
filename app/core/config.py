@@ -13,6 +13,8 @@ class Settings(BaseSettings):
 
     DB_ECHO: bool = False
 
+    CORS_ORIGINS: list[str] = ["http://localhost:5173"]
+
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 
 

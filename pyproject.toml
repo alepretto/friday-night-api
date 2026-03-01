@@ -9,6 +9,7 @@ dependencies = [
     "asyncpg>=0.31.0",
     "fastapi-pagination>=0.15.10",
     "fastapi[standard]>=0.129.0",
+    "gunicorn>=25.1.0",
     "httpx>=0.28.1",
     "orjson>=3.11.7",
     "psycopg2>=2.9.11",
