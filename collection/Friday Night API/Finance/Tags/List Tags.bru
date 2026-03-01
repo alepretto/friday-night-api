@@ -5,9 +5,13 @@ meta {
 }
 
 get {
-  url: {{baseUrl}}/api/v1/finance/tags
+  url: {{baseUrl}}/api/v1/finance/tags?size=200
   body: none
   auth: bearer
+}
+
+params:query {
+  size: 200
 }
 
 auth:bearer {

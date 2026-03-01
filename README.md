@@ -73,9 +73,14 @@ SUPABASE_SERVICE_ROLE_KEY=<sua-service-role-key>
 SUPABASE_JWT_SECRET=<seu-jwt-secret>
 
 DB_ECHO=false
+
+# Opcional — default: ["http://localhost:5173"]
+CORS_ORIGINS=["http://localhost:5173","http://localhost:3000"]
 ```
 
 ## Como executar
+
+### Desenvolvimento local
 
 ```bash
 uv sync                                       # instalar dependências
@@ -85,6 +90,25 @@ uv run uvicorn app.main:app --reload          # subir API
 
 API disponível em `http://localhost:8000`.
 Swagger UI: `http://localhost:8000/docs` — ReDoc: `http://localhost:8000/redoc`
+
+### Docker
+
+```bash
+docker build -t friday-night-api .
+docker run --env-file .env -p 8000:8000 friday-night-api
+```
+
+Ou via docker-compose na raiz do monorepo:
+
+```bash
+docker compose up api
+```
+
+Para rodar as migrações no container:
+
+```bash
+docker compose exec api uv run alembic upgrade head
+```
 
 ## Comandos úteis
 
