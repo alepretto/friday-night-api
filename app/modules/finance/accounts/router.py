@@ -17,6 +17,15 @@ from app.modules.finance.accounts.model import AccountStatus
 router = APIRouter(prefix="/accounts", tags=["account"])
 
 
+@router.get("/types")
+async def get_account_types(
+    service: AccountService = Depends(get_account_service),
+    user: User = Depends(get_current_user),
+):
+    """Retorna todos os tipos de conta disponíveis."""
+    return {"types": [{"id": t.value, "label": t.value} for t in AccountType]}
+
+
 @router.post("", response_model=AccountResponse, status_code=HTTPStatus.CREATED)
 async def create_account(
     payload: AccountCreate,
