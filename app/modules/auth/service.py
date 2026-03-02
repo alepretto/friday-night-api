@@ -64,7 +64,7 @@ class AuthService:
         hashed_token = link_response.properties.hashed_token
 
         auth_response = await self.supabase.auth.verify_otp(
-            {"email": user.email, "token": hashed_token, "type": "magiclink"}
+            {"token_hash": hashed_token, "type": "magiclink"}
         )
 
         session = auth_response.session
