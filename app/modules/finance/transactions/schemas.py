@@ -30,3 +30,34 @@ class TransactionResponse(TransactionCreate):
     @field_serializer("created_at", "updated_at", "date_transaction")
     def serialize_datetime(self, dt: Optional[datetime]):
         return to_local(dt) if dt is not None else None
+
+
+class CategorySummary(SQLModel):
+    category_label: str
+    category_type: str
+    total: Decimal
+    transaction_count: int
+    percent: Decimal
+
+
+class TransactionSummaryResponse(SQLModel):
+    total_income: Decimal
+    total_expense: Decimal
+    balance: Decimal
+    transaction_count: int
+    by_category: list[CategorySummary]
+
+
+class RecentTransactionResponse(SQLModel):
+    id: uuid.UUID
+    value: Decimal
+    description: Optional[str] = None
+    date_transaction: Optional[datetime] = None
+    account_id: uuid.UUID
+    category_label: str
+    category_type: str
+    subcategory_label: str
+
+    @field_serializer("date_transaction")
+    def serialize_datetime(self, dt: Optional[datetime]):
+        return to_local(dt) if dt is not None else None

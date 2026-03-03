@@ -1,11 +1,14 @@
 import uuid
 from datetime import datetime, timezone
 from decimal import Decimal
-from typing import Optional
+from typing import TYPE_CHECKING, Optional
 
 from sqlalchemy import TIMESTAMP, Column
-from sqlmodel import DECIMAL, Field, SQLModel, func
+from sqlmodel import DECIMAL, Field, Relationship, SQLModel, func
 from uuid6 import uuid7
+
+if TYPE_CHECKING:
+    from app.modules.finance.tags.model import Tag
 
 
 class Transaction(SQLModel, table=True):
@@ -33,6 +36,8 @@ class Transaction(SQLModel, table=True):
     )
 
     description: Optional[str] = Field(default=None, nullable=True)
+
+    tag: Optional["Tag"] = Relationship()
 
     created_at: Optional[datetime] = Field(
         default=None,

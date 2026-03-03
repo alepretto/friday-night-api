@@ -10,7 +10,11 @@ from app.modules.finance.transactions.exceptions import (
 )
 from app.modules.finance.transactions.model import Transaction
 from app.modules.finance.transactions.repo import TransactionRepo
-from app.modules.finance.transactions.schemas import TransactionCreate
+from app.modules.finance.transactions.schemas import (
+    RecentTransactionResponse,
+    TransactionCreate,
+    TransactionSummaryResponse,
+)
 from app.modules.user.model import User
 
 
@@ -57,3 +61,20 @@ class TransactionService:
         return await self.repo.list_by_account(
             account_id, user.id, date_start, date_end, params
         )
+
+    async def get_summary(
+        self,
+        user: User,
+        date_start: datetime,
+        date_end: datetime,
+        account_id: Optional[uuid.UUID] = None,
+    ) -> TransactionSummaryResponse:
+        return await self.repo.get_summary(user.id, date_start, date_end, account_id)
+
+    async def list_recent(
+        self,
+        user: User,
+        limit: int = 10,
+        account_id: Optional[uuid.UUID] = None,
+    ) -> list[RecentTransactionResponse]:
+        return await self.repo.list_recent(user.id, limit, account_id)
