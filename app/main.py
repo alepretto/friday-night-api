@@ -7,6 +7,7 @@ from supabase_auth.errors import AuthApiError
 from app.api.router import main_router
 from app.core.config import settings
 from app.core.exception import FridayNightException
+from app.telegram.router import router as telegram_router
 
 
 app = FastAPI(title=settings.PROJECT_NAME, version="0.1.0")
@@ -37,5 +38,6 @@ async def friday_night_exception_handler(request: Request, exc: FridayNightExcep
 
 
 app.include_router(main_router)
+app.include_router(telegram_router)
 
 add_pagination(app)

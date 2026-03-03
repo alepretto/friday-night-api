@@ -12,6 +12,10 @@ class Settings(BaseSettings):
     SUPABASE_JWT_SECRET: str
 
     TELEGRAM_BOT_TOKEN: str = ""
+    TELEGRAM_WEBHOOK_SECRET: str = ""
+
+    OPENROUTER_API_KEY: str = ""
+    AGENT_MODEL: str = "openai/gpt-4o-mini"
 
     DB_ECHO: bool = False
 
