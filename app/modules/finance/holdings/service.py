@@ -1,3 +1,5 @@
+import uuid
+
 from app.modules.finance.holdings.model import Holding
 from app.modules.finance.holdings.repo import HoldingRepo
 from app.modules.finance.holdings.schemas import HoldingCreate
@@ -9,6 +11,8 @@ class HoldingService:
         self.repo = repo
 
     async def create_update(self, payload: HoldingCreate, user: User):
-
         model = Holding.model_validate(payload, update={"user_id": user.id})
         return await self.repo.create_update(model)
+
+    async def list_by_account(self, account_id: uuid.UUID, user_id: uuid.UUID) -> list[Holding]:
+        return await self.repo.list_by_account(account_id, user_id)

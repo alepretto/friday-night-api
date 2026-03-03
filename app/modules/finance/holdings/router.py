@@ -1,3 +1,4 @@
+import uuid
 from http import HTTPStatus
 from typing import Annotated
 
@@ -19,3 +20,12 @@ async def create_holding(
     user: Annotated[User, Depends(get_current_user)],
 ):
     return await service.create_update(payload, user)
+
+
+@router.get("", response_model=list[HoldingResponse])
+async def list_holdings(
+    account_id: uuid.UUID,
+    service: Annotated[HoldingService, Depends(get_holding_service)],
+    user: Annotated[User, Depends(get_current_user)],
+):
+    return await service.list_by_account(account_id, user.id)
